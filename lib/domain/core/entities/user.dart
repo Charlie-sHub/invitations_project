@@ -1,6 +1,5 @@
 import 'package:dartz/dartz.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:invitations_project/domain/core/entities/invitation.dart';
 import 'package:invitations_project/domain/core/failures/value_failure.dart';
 import 'package:invitations_project/domain/core/validation/objects/email_address.dart';
 import 'package:invitations_project/domain/core/validation/objects/password.dart';
@@ -17,7 +16,7 @@ class User with _$User {
     required UniqueId id,
     required EmailAddress email,
     required Password password,
-    required List<Invitation> invitations,
+    required Set<UniqueId> invitationsIds,
     required PastDate lastLogin,
     required PastDate creationDate,
   }) = _User;

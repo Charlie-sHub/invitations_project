@@ -9,9 +9,14 @@ Invitation getValidInvitation() {
     id: UniqueId(),
     creatorId: UniqueId(),
     title: Title("valid invitation title"),
-    eventDate: FutureDate(DateTime.now().add(const Duration(days: 100))),
-    lastModificationDate:
-        PastDate(DateTime.now().subtract(const Duration(days: 100))),
-    creationDate: PastDate(DateTime.now().subtract(const Duration(days: 100))),
+    eventDate: FutureDate(
+      DateTime.now().add(const Duration(days: 100)),
+    ),
+    lastModificationDate: PastDate(
+      DateTime.now().subtract(const Duration(days: 100)),
+    ),
+    creationDate: PastDate(
+      DateTime.now().subtract(const Duration(days: 100)),
+    ),
   );
 }

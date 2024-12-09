@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:invitations_project/data/core/get_valid_invitation.dart';
+import 'package:invitations_project/data/core/misc/get_valid_invitation.dart';
 import 'package:invitations_project/domain/core/validation/objects/future_date.dart';
 import 'package:invitations_project/domain/core/validation/objects/past_date.dart';
 import 'package:invitations_project/domain/core/validation/objects/title.dart';

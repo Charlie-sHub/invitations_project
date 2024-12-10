@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:invitations_project/domain/core/failures/value_failure.dart';
+import 'package:invitations_project/domain/core/misc/invitation_type.dart';
 import 'package:invitations_project/domain/core/validation/objects/future_date.dart';
 import 'package:invitations_project/domain/core/validation/objects/past_date.dart';
 import 'package:invitations_project/domain/core/validation/objects/title.dart';
@@ -16,6 +17,7 @@ class Invitation with _$Invitation {
     required UniqueId id,
     required UniqueId creatorId,
     required Title title,
+    required InvitationType type,
     required FutureDate eventDate,
     required PastDate creationDate,
     required PastDate lastModificationDate,

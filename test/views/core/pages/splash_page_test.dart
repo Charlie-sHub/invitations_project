@@ -1,1 +1,3 @@
-// TODO: Test the SplashPage
+void main() {
+  // TODO: Test the SplashPage
+}

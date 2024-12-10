@@ -1,0 +1,4 @@
+enum InvitationType {
+  example,
+  normal,
+}

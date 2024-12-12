@@ -4,6 +4,7 @@ import 'package:invitations_project/core/error/failure.dart';
 import 'package:invitations_project/domain/authentication/repository/authentication_repository_interface.dart';
 import 'package:invitations_project/domain/core/entities/user.dart';
 import 'package:invitations_project/domain/core/validation/objects/email_address.dart';
+import 'package:invitations_project/domain/core/validation/objects/password.dart';
 
 @LazySingleton(
   as: AuthenticationRepositoryInterface,
@@ -24,7 +25,7 @@ class ProductionAuthenticationRepository
   }
 
   @override
-  Future<Either<Failure, Unit>> logIn(User user) {
+  Future<Either<Failure, Unit>> logIn({required EmailAddress email, required Password password}) {
     // TODO: implement logIn
     throw UnimplementedError();
   }
@@ -48,7 +49,7 @@ class ProductionAuthenticationRepository
   }
 
   @override
-  Future<Either<Failure, Unit>> register(User user) {
+  Future<Either<Failure, Unit>> register({required EmailAddress email, required Password password}) {
     // TODO: implement register
     throw UnimplementedError();
   }

@@ -5,6 +5,7 @@ import 'package:invitations_project/data/core/misc/get_valid_user.dart';
 import 'package:invitations_project/domain/authentication/repository/authentication_repository_interface.dart';
 import 'package:invitations_project/domain/core/entities/user.dart';
 import 'package:invitations_project/domain/core/validation/objects/email_address.dart';
+import 'package:invitations_project/domain/core/validation/objects/password.dart';
 
 /// Simple repository to work in dev, does nothing except return success
 @LazySingleton(
@@ -22,7 +23,10 @@ class DevelopmentAuthenticationRepository
   }
 
   @override
-  Future<Either<Failure, Unit>> logIn(User user) async {
+  Future<Either<Failure, Unit>> logIn({
+    required EmailAddress email,
+    required Password password,
+  }) async {
     return right(unit);
   }
 
@@ -40,7 +44,10 @@ class DevelopmentAuthenticationRepository
   Future<void> logOut() async {}
 
   @override
-  Future<Either<Failure, Unit>> register(User user) async {
+  Future<Either<Failure, Unit>> register({
+    required EmailAddress email,
+    required Password password,
+  }) async {
     return right(unit);
   }
 

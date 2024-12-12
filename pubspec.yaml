@@ -35,6 +35,7 @@ dev_dependencies:
   auto_route_generator: ^9.0.0
 
   flutter_lints: ^5.0.0
+  lints: ^5.0.0
 
 flutter:
   uses-material-design: true

@@ -9,10 +9,10 @@ class AppRouter extends RootStackRouter {
   @override
   final List<AutoRoute> routes = [
     AutoRoute(page: SplashRoute.page, path: '/'),
-    // AutoRoute(page: SignInRoute.page),
-    // AutoRoute(page: HomeRoute.page),
-    // AutoRoute(page: CartRoute.page),
-    // AutoRoute(page: AccountRoute.page),
-    // AutoRoute(page: EditionRoute.page),
+    AutoRoute(page: SignInRoute.page),
+    AutoRoute(page: CartRoute.page),
+    AutoRoute(page: HomeRoute.page),
+    AutoRoute(page: InvitationEditionRoute.page),
+    AutoRoute(page: InvitationViewRoute.page, path: '/invitations/:id'),
   ];
 }

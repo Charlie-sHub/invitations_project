@@ -57,6 +57,7 @@ linter:
     - use_function_type_syntax_for_parameters
     - use_rethrow_when_possible
     - use_super_parameters
+    - prefer_const_declarations
 
 analyzer:
   exclude:

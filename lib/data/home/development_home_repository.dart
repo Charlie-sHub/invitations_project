@@ -11,16 +11,16 @@ import 'package:invitations_project/domain/home/repository/home_repository_inter
 )
 class DevelopmentHomeRepository implements HomeRepositoryInterface {
   @override
-  Future<Either<Failure, Set<Invitation>>> getExampleInvitations() async {
+  Future<Either<Failure, List<Invitation>>> getExampleInvitations() async {
     return right(
-      {
+      [
         getValidInvitation(),
         getValidInvitation(),
         getValidInvitation(),
         getValidInvitation(),
         getValidInvitation(),
         getValidInvitation(),
-      },
+      ],
     );
   }
 }

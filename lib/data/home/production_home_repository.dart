@@ -10,7 +10,7 @@ import 'package:invitations_project/domain/home/repository/home_repository_inter
 )
 class ProductionHomeRepository implements HomeRepositoryInterface {
   @override
-  Future<Either<Failure, Set<Invitation>>> getExampleInvitations() {
+  Future<Either<Failure, List<Invitation>>> getExampleInvitations() {
     // TODO: implement getExampleInvitations
     throw UnimplementedError();
   }

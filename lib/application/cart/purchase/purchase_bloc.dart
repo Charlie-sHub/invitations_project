@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:injectable/injectable.dart';
 import 'package:invitations_project/core/error/failure.dart';
 import 'package:invitations_project/domain/cart/repository/cart_repository_interface.dart';
 
@@ -9,6 +10,7 @@ part 'purchase_state.dart';
 
 part 'purchase_bloc.freezed.dart';
 
+@injectable
 class PurchaseBloc extends Bloc<PurchaseEvent, PurchaseState> {
   final CartRepositoryInterface _repository;
 

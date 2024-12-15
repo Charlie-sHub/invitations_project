@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:injectable/injectable.dart';
 import 'package:invitations_project/core/error/failure.dart';
 import 'package:invitations_project/domain/core/entities/invitation.dart';
 import 'package:invitations_project/domain/core/validation/objects/future_date.dart';
@@ -13,6 +14,7 @@ part 'invitation_editor_state.dart';
 
 part 'invitation_editor_bloc.freezed.dart';
 
+@injectable
 class InvitationEditorBloc
     extends Bloc<InvitationEditorEvent, InvitationEditorState> {
   final InvitationEditionRepositoryInterface _repository;

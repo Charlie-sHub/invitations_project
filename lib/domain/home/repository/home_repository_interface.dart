@@ -5,5 +5,5 @@ import 'package:invitations_project/domain/core/entities/invitation.dart';
 /// Repository for the Home page.
 abstract class HomeRepositoryInterface {
   /// Gets a Set with the example Invitations
-  Future<Either<Failure, Set<Invitation>>> getExampleInvitations( );
+  Future<Either<Failure, List<Invitation>>> getExampleInvitations();
 }

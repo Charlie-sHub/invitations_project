@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:injectable/injectable.dart';
 import 'package:invitations_project/core/error/failure.dart';
 import 'package:invitations_project/domain/core/entities/invitation.dart';
 import 'package:invitations_project/domain/core/validation/objects/unique_id.dart';
@@ -11,6 +12,7 @@ part 'invitation_view_state.dart';
 
 part 'invitation_view_bloc.freezed.dart';
 
+@injectable
 class InvitationViewBloc
     extends Bloc<InvitationViewEvent, InvitationViewState> {
   final InvitationViewRepositoryInterface _repository;

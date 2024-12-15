@@ -19,7 +19,7 @@ void main() {
     DataFailure.serverError(errorString: "error"),
   );
 
-  final invitations = {getValidInvitation()};
+  final invitations = [getValidInvitation()];
 
   setUp(
     () {

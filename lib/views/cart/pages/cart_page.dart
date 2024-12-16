@@ -8,7 +8,7 @@ class CartPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: Request authentication
+    // TODO: Use the CartBloc
     return Scaffold(
       appBar: InvitationsAppBar(),
       body: Center(

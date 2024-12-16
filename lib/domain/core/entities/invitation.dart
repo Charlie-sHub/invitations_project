@@ -24,6 +24,16 @@ class Invitation with _$Invitation {
     // TODO: Add the rest of the invitation's data
   }) = _Invitation;
 
+  factory Invitation.empty() => Invitation(
+    id: UniqueId(),
+    creatorId: UniqueId(),
+    title: Title(""),
+    type: InvitationType.example,
+    eventDate: FutureDate(DateTime.now().add(Duration(days: 7))),
+    creationDate: PastDate(DateTime.now()),
+    lastModificationDate: PastDate(DateTime.now()),
+  );
+
   Option<ValueFailure<dynamic>> get failureOption {
     return title.failureOrUnit
         .andThen(eventDate.failureOrUnit)
@@ -43,4 +53,6 @@ class Invitation with _$Invitation {
   }
 
   bool get isValid => failureOption.isNone();
+
+
 }

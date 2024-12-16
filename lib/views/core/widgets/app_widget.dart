@@ -10,6 +10,7 @@ class AppWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // TODO: Provide CartBloc and AuthenticationBloc
     final showBanner = Provider.of<String>(context) != Environment.prod;
     return MaterialApp.router(
       title: "Invitaciones",

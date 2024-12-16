@@ -1,6 +1,5 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:invitations_project/domain/core/validation/objects/unique_id.dart';
 
 import '../../home/widgets/invitations_app_bar.dart';
 

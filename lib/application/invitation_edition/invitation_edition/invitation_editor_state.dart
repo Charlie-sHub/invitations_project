@@ -9,9 +9,9 @@ class InvitationEditorState with _$InvitationEditorState {
     required Option<Either<Failure, Unit>> failureOrSuccessOption,
   }) = _InvitationEditorState;
 
-  factory InvitationEditorState.initial(Invitation invitation) =>
+  factory InvitationEditorState.initial() =>
       InvitationEditorState(
-        invitation: invitation,
+        invitation: Invitation.empty(),
         showErrorMessages: false,
         isSubmitting: false,
         failureOrSuccessOption: none(),

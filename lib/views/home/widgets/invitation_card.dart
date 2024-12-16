@@ -1,5 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:invitations_project/application/invitation_edition/invitation_edition/invitation_editor_bloc.dart';
 import 'package:invitations_project/domain/core/entities/invitation.dart';
 import 'package:invitations_project/views/core/routes/router.gr.dart';
 
@@ -14,9 +16,12 @@ class InvitationCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => context.router.push(
-        InvitationEditionRoute(invitation: invitation),
-      ),
+      onTap: () {
+        context.read<InvitationEditorBloc>().add(
+              InvitationEditorEvent.initialized(invitation),
+            );
+        context.router.push(InvitationEditionRoute());
+      },
       child: Padding(
         padding: const EdgeInsets.all(40),
         child: Card(

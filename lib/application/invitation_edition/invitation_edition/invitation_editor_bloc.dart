@@ -58,11 +58,12 @@ class InvitationEditorBloc
           Either<Failure, Unit>? failureOrUnit;
           emit(
             state.copyWith(
+              invitation: invitationToSave,
               isSubmitting: true,
               failureOrSuccessOption: none(),
             ),
           );
-          if (invitationToSave.isValid) {
+          if (state.invitation.isValid) {
             // TODO: Handle the submission of the invitation
           }
           emit(

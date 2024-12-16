@@ -58,6 +58,7 @@ linter:
     - use_rethrow_when_possible
     - use_super_parameters
     - prefer_const_declarations
+    - avoid_print
 
 analyzer:
   exclude:

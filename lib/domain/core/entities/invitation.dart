@@ -27,7 +27,7 @@ class Invitation with _$Invitation {
   factory Invitation.empty() => Invitation(
     id: UniqueId(),
     creatorId: UniqueId(),
-    title: Title(""),
+    title: Title("title"),
     type: InvitationType.example,
     eventDate: FutureDate(DateTime.now().add(Duration(days: 7))),
     creationDate: PastDate(DateTime.now()),

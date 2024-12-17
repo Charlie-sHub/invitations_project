@@ -5,15 +5,15 @@ class InvitationEditorState with _$InvitationEditorState {
   const factory InvitationEditorState({
     required Invitation invitation,
     required bool showErrorMessages,
-    required bool isSubmitting,
-    required Option<Either<Failure, Unit>> failureOrSuccessOption,
+    required bool hasSubmitted,
+    required Option<Either<ValueFailure, Unit>> failureOrSuccessOption,
   }) = _InvitationEditorState;
 
   factory InvitationEditorState.initial() =>
       InvitationEditorState(
         invitation: Invitation.empty(),
         showErrorMessages: false,
-        isSubmitting: false,
+        hasSubmitted: false,
         failureOrSuccessOption: none(),
       );
 }

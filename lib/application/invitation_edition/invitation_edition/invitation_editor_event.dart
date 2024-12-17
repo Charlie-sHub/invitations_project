@@ -3,7 +3,7 @@ part of 'invitation_editor_bloc.dart';
 @freezed
 class InvitationEditorEvent with _$InvitationEditorEvent {
   const factory InvitationEditorEvent.initialized(
-    Invitation initialInvitation,
+    Invitation invitation,
   ) = _Initialized;
 
   const factory InvitationEditorEvent.changedTitle(

@@ -19,7 +19,7 @@ class SimpleInvitationCard extends StatelessWidget {
           children: [
             Text(invitation.title.getOrCrash()),
             const SizedBox(height: 10),
-            const Text('Precio: \€XX.XX'),
+            const Text('Precio: €XX.XX'),
           ],
         ),
       ),

@@ -83,7 +83,7 @@ void main() {
         act: (bloc) {
           bloc.add(const LogInFormEvent.registered());
         },
-        verify: (_) async => mockRepository.register(
+        verify: (_) => mockRepository.register(
           email: EmailAddress(email),
           password: Password(password),
         ),
@@ -110,7 +110,7 @@ void main() {
           return logInFormBloc;
         },
         act: (bloc) => bloc.add(const LogInFormEvent.loggedInGoogle()),
-        verify: (_) async => mockRepository.logInGoogle(),
+        verify: (_) => mockRepository.logInGoogle(),
         expect: () => [
           logInFormBloc.state.copyWith(
             isSubmitting: true,
@@ -134,7 +134,7 @@ void main() {
           return logInFormBloc;
         },
         act: (bloc) => bloc.add(const LogInFormEvent.loggedInApple()),
-        verify: (_) async => mockRepository.logInApple(),
+        verify: (_) => mockRepository.logInApple(),
         expect: () => [
           logInFormBloc.state.copyWith(
             isSubmitting: true,
@@ -172,7 +172,7 @@ void main() {
           return logInFormBloc;
         },
         act: (bloc) => bloc.add(const LogInFormEvent.registered()),
-        verify: (_) async => mockRepository.register(
+        verify: (_) => mockRepository.register(
           email: EmailAddress(email),
           password: Password(password),
         ),
@@ -209,7 +209,7 @@ void main() {
           return logInFormBloc;
         },
         act: (bloc) => bloc.add(const LogInFormEvent.loggedInGoogle()),
-        verify: (_) async => mockRepository.logInGoogle(),
+        verify: (_) => mockRepository.logInGoogle(),
         expect: () => [
           logInFormBloc.state.copyWith(
             isSubmitting: true,
@@ -237,7 +237,7 @@ void main() {
           return logInFormBloc;
         },
         act: (bloc) => bloc.add(const LogInFormEvent.loggedInApple()),
-        verify: (_) async => mockRepository.logInApple(),
+        verify: (_) => mockRepository.logInApple(),
         expect: () => [
           logInFormBloc.state.copyWith(
             isSubmitting: true,

@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
+import 'package:invitations_project/application/core/failures/application_failure.dart';
 import 'package:invitations_project/core/error/failure.dart';
 import 'package:invitations_project/domain/cart/repository/cart_repository_interface.dart';
 import 'package:invitations_project/domain/core/entities/invitation.dart';
@@ -22,26 +23,55 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         addedInvitation: (invitation) => emit(
           state.copyWith(invitationOption: some(invitation)),
         ),
-        purchased: () async {
-          emit(state.copyWith(
-            isSubmitting: true,
-            failureOrSuccessOption: none(),
-          ));
-          final failureOrUnit = await _repository.purchase();
-          emit(
+        purchased: () async => state.invitationOption.fold(
+          () => emit(
             state.copyWith(
-              isSubmitting: false,
               showErrorMessages: true,
               failureOrSuccessOption: some(
-                failureOrUnit.fold(
-                  (failure) => left(failure),
-                  (_) => right(unit),
+                left(
+                  Failure.application(ApplicationFailure.emptyCart()),
                 ),
               ),
             ),
-          );
-          return null;
-        },
+          ),
+          (invitation) async {
+            emit(
+              state.copyWith(
+                isSubmitting: true,
+                failureOrSuccessOption: none(),
+              ),
+            );
+            final saveEither = await _repository.saveInvitation(invitation);
+            emit(
+              await saveEither.fold(
+                (failure) => state.copyWith(
+                  isSubmitting: false,
+                  showErrorMessages: true,
+                  failureOrSuccessOption: some(left(failure)),
+                ),
+                (_) async {
+                  final purchaseEither = await _repository.purchase();
+                  return purchaseEither.fold(
+                    (failure) async {
+                      await _repository.deleteInvitation(invitation.id);
+                      return state.copyWith(
+                        isSubmitting: false,
+                        showErrorMessages: true,
+                        failureOrSuccessOption: some(left(failure)),
+                      );
+                    },
+                    (_) => state.copyWith(
+                      isSubmitting: false,
+                      showErrorMessages: true,
+                      failureOrSuccessOption: some(right(unit)),
+                    ),
+                  );
+                },
+              ),
+            );
+            return null;
+          },
+        ),
         emptied: () => emit(CartState.initial()),
       ),
     );

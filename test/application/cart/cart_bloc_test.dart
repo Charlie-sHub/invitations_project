@@ -2,6 +2,7 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:invitations_project/application/cart/cart/cart_bloc.dart';
+import 'package:invitations_project/application/core/failures/application_failure.dart';
 import 'package:invitations_project/core/error/failure.dart';
 import 'package:invitations_project/data/core/failures/data_failure.dart';
 import 'package:invitations_project/data/core/misc/get_valid_invitation.dart';
@@ -51,8 +52,25 @@ void main() {
   );
 
   blocTest<CartBloc, CartState>(
-    'emits [state, state] when Purchased is added and repository returns Right',
+    'emits [state] when Purchased is added but there is no Invitation',
+    build: () => cartBloc,
+    act: (bloc) => bloc.add(const CartEvent.purchased()),
+    expect: () => [
+      CartState.initial().copyWith(
+        showErrorMessages: true,
+        failureOrSuccessOption: some(
+          left(Failure.application(ApplicationFailure.emptyCart())),
+        ),
+      ),
+    ],
+  );
+
+  blocTest<CartBloc, CartState>(
+    'emits [state, state] when Purchased is added and repository returns Right on purchase and save',
     build: () {
+      when(mockRepository.saveInvitation(invitation)).thenAnswer(
+        (_) async => right(unit),
+      );
       when(mockRepository.purchase()).thenAnswer(
         (_) async => right(unit),
       );
@@ -60,7 +78,7 @@ void main() {
       return cartBloc;
     },
     act: (bloc) => bloc.add(const CartEvent.purchased()),
-    verify: (_) => mockRepository.purchase(),
+    verify: (_) => mockRepository.saveInvitation(invitation),
     skip: 1,
     expect: () => [
       CartState.initial().copyWith(
@@ -79,16 +97,16 @@ void main() {
   );
 
   blocTest<CartBloc, CartState>(
-    'emits [state, state] when Purchased is added and repository returns Left',
+    'emits [state, state] when Purchased is added and repository returns Right on saveInvitation but Left on purchase',
     build: () {
-      when(mockRepository.purchase()).thenAnswer(
+      when(mockRepository.saveInvitation(invitation)).thenAnswer(
         (_) async => left(failure),
       );
       cartBloc.add(CartEvent.addedInvitation(invitation));
       return cartBloc;
     },
     act: (bloc) => bloc.add(const CartEvent.purchased()),
-    verify: (_) => mockRepository.purchase(),
+    verify: (_) => mockRepository.saveInvitation(invitation),
     skip: 1,
     expect: () => [
       CartState.initial().copyWith(
@@ -101,9 +119,66 @@ void main() {
         invitationOption: some(invitation),
         isSubmitting: false,
         showErrorMessages: true,
-        failureOrSuccessOption: some(
-          left(failure),
-        ),
+        failureOrSuccessOption: some(left(failure)),
+      ),
+    ],
+  );
+
+  blocTest<CartBloc, CartState>(
+    'emits [state, state] when Purchased is added and repository returns Left on saveInvitation',
+    build: () {
+      when(mockRepository.saveInvitation(invitation)).thenAnswer(
+        (_) async => left(failure),
+      );
+      cartBloc.add(CartEvent.addedInvitation(invitation));
+      return cartBloc;
+    },
+    act: (bloc) => bloc.add(const CartEvent.purchased()),
+    verify: (_) => mockRepository.saveInvitation(invitation),
+    skip: 1,
+    expect: () => [
+      CartState.initial().copyWith(
+        invitationOption: some(invitation),
+        isSubmitting: true,
+        showErrorMessages: false,
+        failureOrSuccessOption: none(),
+      ),
+      CartState.initial().copyWith(
+        invitationOption: some(invitation),
+        isSubmitting: false,
+        showErrorMessages: true,
+        failureOrSuccessOption: some(left(failure)),
+      ),
+    ],
+  );
+
+  blocTest<CartBloc, CartState>(
+    'emits [state, state] when Purchased is added and repository returns Right on saveInvitation but Left on purchase',
+    build: () {
+      when(mockRepository.saveInvitation(invitation)).thenAnswer(
+        (_) async => right(unit),
+      );
+      when(mockRepository.purchase()).thenAnswer(
+        (_) async => left(failure),
+      );
+      cartBloc.add(CartEvent.addedInvitation(invitation));
+      return cartBloc;
+    },
+    act: (bloc) => bloc.add(const CartEvent.purchased()),
+    verify: (_) => mockRepository.deleteInvitation(invitation.id),
+    skip: 1,
+    expect: () => [
+      CartState.initial().copyWith(
+        invitationOption: some(invitation),
+        isSubmitting: true,
+        showErrorMessages: false,
+        failureOrSuccessOption: none(),
+      ),
+      CartState.initial().copyWith(
+        invitationOption: some(invitation),
+        isSubmitting: false,
+        showErrorMessages: true,
+        failureOrSuccessOption: some(left(failure)),
       ),
     ],
   );

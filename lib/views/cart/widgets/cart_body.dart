@@ -20,17 +20,22 @@ class CartBody extends StatelessWidget {
         return true;
       },
       builder: (context, state) {
-        return Padding(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            children: [
-              const Text('Tu carrito'),
-              const SizedBox(height: 30),
-              state.invitationOption.fold(
-                () => Text("ERROR"),
-                (invitation) => SimpleInvitationCard(invitation: invitation),
-              ),
-            ],
+        print("INVITATION: " + state.invitationOption.toString());
+        return Center(
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              children: [
+                const Text('Tu carrito'),
+                const SizedBox(height: 30),
+                state.invitationOption.fold(
+                  () => Text("ERROR"),
+                  (invitation) => SimpleInvitationCard(
+                    invitation: invitation,
+                  ),
+                ),
+              ],
+            ),
           ),
         );
       },

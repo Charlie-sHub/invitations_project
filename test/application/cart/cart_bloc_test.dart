@@ -1,20 +1,29 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:invitations_project/application/cart/cart/cart_bloc.dart';
 import 'package:invitations_project/application/core/failures/application_failure.dart';
 import 'package:invitations_project/core/error/failure.dart';
 import 'package:invitations_project/data/core/failures/data_failure.dart';
 import 'package:invitations_project/data/core/misc/get_valid_invitation.dart';
 import 'package:invitations_project/domain/cart/repository/cart_repository_interface.dart';
+import 'package:logger/logger.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import '../../core/mocks/mock_storage.dart';
 import 'cart_bloc_test.mocks.dart';
+import 'package:mocktail/mocktail.dart' as mocktail;
 
-@GenerateNiceMocks([MockSpec<CartRepositoryInterface>()])
+@GenerateNiceMocks([
+  MockSpec<CartRepositoryInterface>(),
+  MockSpec<Logger>(),
+])
 void main() {
   late MockCartRepositoryInterface mockRepository;
+  late MockLogger mockLogger;
   late CartBloc cartBloc;
+  late Storage storage;
 
   final failure = Failure.data(
     DataFailure.serverError(errorString: "error"),
@@ -24,8 +33,20 @@ void main() {
 
   setUp(
     () {
+      storage = MockStorage();
+      mocktail
+          .when(
+            () => storage.write(mocktail.any(), mocktail.any<dynamic>()),
+          )
+          .thenAnswer((_) async {});
+      HydratedBloc.storage = storage;
+
       mockRepository = MockCartRepositoryInterface();
-      cartBloc = CartBloc(mockRepository);
+      mockLogger = MockLogger();
+      cartBloc = CartBloc(
+        mockRepository,
+        mockLogger,
+      );
     },
   );
 

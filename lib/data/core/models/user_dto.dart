@@ -5,7 +5,6 @@ import 'package:invitations_project/domain/core/validation/objects/email_address
 import 'package:invitations_project/domain/core/validation/objects/password.dart';
 import 'package:invitations_project/domain/core/validation/objects/past_date.dart';
 import 'package:invitations_project/domain/core/validation/objects/unique_id.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 part 'user_dto.freezed.dart';
 
@@ -20,8 +19,8 @@ class UserDto with _$UserDto {
     required String email,
     required String password,
     required Set<String> invitationsIds,
-    @ServerTimestampConverter() required DateTime lastLogin,
-    @ServerTimestampConverter() required DateTime creationDate,
+    @ServerDateStringConverter() required DateTime lastLogin,
+    @ServerDateStringConverter() required DateTime creationDate,
   }) = _UserDto;
 
   factory UserDto.fromDomain(User user) => UserDto(

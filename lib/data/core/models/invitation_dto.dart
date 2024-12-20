@@ -6,7 +6,6 @@ import 'package:invitations_project/domain/core/validation/objects/future_date.d
 import 'package:invitations_project/domain/core/validation/objects/past_date.dart';
 import 'package:invitations_project/domain/core/validation/objects/title.dart';
 import 'package:invitations_project/domain/core/validation/objects/unique_id.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 part 'invitation_dto.freezed.dart';
 
@@ -21,9 +20,9 @@ class InvitationDto with _$InvitationDto {
     required String creatorId,
     required String title,
     required InvitationType type,
-    @ServerTimestampConverter() required DateTime eventDate,
-    @ServerTimestampConverter() required DateTime creationDate,
-    @ServerTimestampConverter() required DateTime lastModificationDate,
+    @ServerDateStringConverter() required DateTime eventDate,
+    @ServerDateStringConverter() required DateTime creationDate,
+    @ServerDateStringConverter() required DateTime lastModificationDate,
   }) = _InvitationDto;
 
   factory InvitationDto.fromDomain(Invitation invitation) => InvitationDto(

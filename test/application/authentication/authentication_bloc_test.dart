@@ -1,23 +1,44 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:bloc_test/bloc_test.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:invitations_project/application/authentication/authentication/authentication_bloc.dart';
 import 'package:invitations_project/data/core/misc/get_valid_user.dart';
 import 'package:invitations_project/domain/authentication/repository/authentication_repository_interface.dart';
 import 'package:invitations_project/domain/core/entities/user.dart';
+import 'package:logger/logger.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import '../../core/mocks/mock_storage.dart';
 import 'authentication_bloc_test.mocks.dart';
+import 'package:mocktail/mocktail.dart' as mocktail;
 
-@GenerateNiceMocks([MockSpec<AuthenticationRepositoryInterface>()])
+@GenerateNiceMocks([
+  MockSpec<AuthenticationRepositoryInterface>(),
+  MockSpec<Logger>(),
+])
 void main() {
   late MockAuthenticationRepositoryInterface mockRepository;
+  late MockLogger mockLogger;
   late AuthenticationBloc authenticationBloc;
+  late Storage storage;
 
   setUp(
     () {
+      storage = MockStorage();
+      mocktail
+          .when(
+            () => storage.write(mocktail.any(), mocktail.any<dynamic>()),
+          )
+          .thenAnswer((_) async {});
+
+      HydratedBloc.storage = storage;
       mockRepository = MockAuthenticationRepositoryInterface();
-      authenticationBloc = AuthenticationBloc(mockRepository);
+      mockLogger = MockLogger();
+      authenticationBloc = AuthenticationBloc(
+        mockRepository,
+        mockLogger,
+      );
     },
   );
 

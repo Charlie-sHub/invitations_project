@@ -16,6 +16,10 @@ class InvitationsAppBar extends StatelessWidget implements PreferredSizeWidget {
           onPressed: () => context.router.push(const AccountRoute()),
         ),
         IconButton(
+          icon: const Icon(Icons.edit),
+          onPressed: () => context.router.push(const InvitationEditionRoute()),
+        ),
+        IconButton(
           icon: const Icon(Icons.shopping_cart),
           onPressed: () => context.router.push(const CartRoute()),
         ),

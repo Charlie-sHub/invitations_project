@@ -6,22 +6,19 @@ import 'package:invitations_project/application/authentication/authentication/au
 import 'package:invitations_project/data/core/misc/get_valid_user.dart';
 import 'package:invitations_project/domain/authentication/repository/authentication_repository_interface.dart';
 import 'package:invitations_project/domain/core/entities/user.dart';
-import 'package:logger/logger.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import '../../core/mocks/mock_storage.dart';
 import 'authentication_bloc_test.mocks.dart';
 import 'package:mocktail/mocktail.dart' as mocktail;
 
-@GenerateNiceMocks([
-  MockSpec<AuthenticationRepositoryInterface>(),
-  MockSpec<Logger>(),
-])
+@GenerateNiceMocks([MockSpec<AuthenticationRepositoryInterface>()])
 void main() {
   late MockAuthenticationRepositoryInterface mockRepository;
-  late MockLogger mockLogger;
   late AuthenticationBloc authenticationBloc;
   late Storage storage;
+
+  final user = getValidUser();
 
   setUp(
     () {
@@ -34,11 +31,7 @@ void main() {
 
       HydratedBloc.storage = storage;
       mockRepository = MockAuthenticationRepositoryInterface();
-      mockLogger = MockLogger();
-      authenticationBloc = AuthenticationBloc(
-        mockRepository,
-        mockLogger,
-      );
+      authenticationBloc = AuthenticationBloc(mockRepository);
     },
   );
 
@@ -61,7 +54,7 @@ void main() {
     'emits [Authenticated] when event AuthenticationCheckRequested is added and repository returns some',
     build: () {
       when(mockRepository.getLoggedInUser()).thenAnswer(
-        (_) async => some<User>(getValidUser()),
+        (_) async => some(user),
       );
       return authenticationBloc;
     },
@@ -69,7 +62,9 @@ void main() {
       const AuthenticationEvent.authenticationCheckRequested(),
     ),
     verify: (_) => mockRepository.getLoggedInUser(),
-    expect: () => const [AuthenticationState.authenticated()],
+    expect: () {
+      return [AuthenticationState.authenticated(user)];
+    },
   );
 
   blocTest<AuthenticationBloc, AuthenticationState>(

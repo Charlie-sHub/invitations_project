@@ -35,8 +35,12 @@ class InvitationEditionForm extends StatelessWidget {
     );
   }
 
-  void _invitationEditionListener(BuildContext context, InvitationEditorState state) {
+  void _invitationEditionListener(
+      BuildContext context, InvitationEditorState state) {
     if (state.hasSubmitted) {
+      context.read<InvitationEditorBloc>().add(
+            InvitationEditorEvent.unSubmitted(),
+          );
       context.read<CartBloc>().add(
             CartEvent.addedInvitation(state.invitation),
           );

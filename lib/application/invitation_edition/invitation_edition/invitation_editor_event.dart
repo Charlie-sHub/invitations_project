@@ -18,5 +18,7 @@ class InvitationEditorEvent with _$InvitationEditorEvent {
     DateTime date,
   ) = _ChangedDate;
 
+  const factory InvitationEditorEvent.unSubmitted() = _UnSubmitted;
+
   const factory InvitationEditorEvent.submitted() = _Submitted;
 }

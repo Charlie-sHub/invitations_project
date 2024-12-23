@@ -65,6 +65,12 @@ class InvitationEditorBloc
             ),
           ),
         ),
+        unSubmitted: () => emit(
+          state.copyWith(
+            hasSubmitted: false,
+            failureOrSuccessOption: none(),
+          ),
+        ),
       ),
     );
   }

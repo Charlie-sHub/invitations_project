@@ -5,7 +5,6 @@ import 'package:invitations_project/application/authentication/authentication/au
 import 'package:invitations_project/application/authentication/login_form/log_in_form_bloc.dart';
 import 'package:invitations_project/injection.dart';
 import 'package:invitations_project/views/authentication/widgets/email_text_field.dart';
-import 'package:invitations_project/views/authentication/widgets/log_in_apple_button.dart';
 import 'package:invitations_project/views/authentication/widgets/log_in_google_button.dart';
 import 'package:invitations_project/views/authentication/widgets/login_failure_message.dart';
 import 'package:invitations_project/views/authentication/widgets/password_text_field.dart';
@@ -48,7 +47,8 @@ class LoginForm extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 LogInGoogleButton(),
-                LogInAppleButton(),
+                // Apple log in will be ignored for the time being
+                // LogInAppleButton(),
               ],
             )
           ],

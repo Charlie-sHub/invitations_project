@@ -34,5 +34,5 @@ abstract class AuthenticationRepositoryInterface {
   Future<void> logOut();
 
   /// Deletes the user
-  Future<void> deleteUser();
+  Future<Either<Failure, Unit>>  deleteUser();
 }

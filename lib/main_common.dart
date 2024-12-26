@@ -5,6 +5,8 @@ import 'package:invitations_project/injection.dart';
 import 'package:invitations_project/views/core/widgets/app_widget.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 Future<void> mainCommon(String environment) async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,8 +17,9 @@ Future<void> mainCommon(String environment) async {
   }
    */
   configureDependencies(environment);
-  // Firebase use requires this
-  // await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   HydratedBloc.storage = await HydratedStorage.build(
     storageDirectory: kIsWeb
         ? HydratedStorage.webStorageDirectory

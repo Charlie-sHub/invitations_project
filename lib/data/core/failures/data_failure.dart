@@ -11,6 +11,8 @@ class DataFailure<T> with _$DataFailure<T> {
 
   const factory DataFailure.unregisteredUser() = UnregisteredUser<T>;
 
+  const factory DataFailure.cancelledByUser() = CancelledByUser<T>;
+
   const factory DataFailure.serverError({
     required String errorString,
   }) = ServerError<T>;

@@ -15,7 +15,9 @@ import 'package:invitations_project/domain/core/validation/objects/password.dart
 class DevelopmentAuthenticationRepository
     implements AuthenticationRepositoryInterface {
   @override
-  Future<void> deleteUser() async {}
+  Future<Either<Failure, Unit>> deleteUser() async {
+    return right(unit);
+  }
 
   @override
   Future<Option<User>> getLoggedInUser() async {

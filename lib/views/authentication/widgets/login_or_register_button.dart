@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:invitations_project/application/authentication/login_form/log_in_form_bloc.dart';
-import 'package:invitations_project/views/account/widgets/login_form_action.dart';
+import 'package:invitations_project/views/authentication/widgets/login_form_action.dart';
 
 class LoginOrRegisterButton extends StatelessWidget {
   const LoginOrRegisterButton({super.key});

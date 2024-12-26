@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:invitations_project/application/authentication/authentication/authentication_bloc.dart';
 import 'package:invitations_project/application/authentication/login_form/log_in_form_bloc.dart';
 import 'package:invitations_project/injection.dart';
-import 'package:invitations_project/views/account/widgets/login_pop_up.dart';
+import 'package:invitations_project/views/authentication/widgets/login_pop_up.dart';
 import 'package:invitations_project/views/core/widgets/invitations_progress_indicator.dart';
 import 'package:invitations_project/views/home/widgets/invitations_app_bar.dart';
 

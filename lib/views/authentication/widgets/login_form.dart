@@ -4,9 +4,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:invitations_project/application/authentication/authentication/authentication_bloc.dart';
 import 'package:invitations_project/application/authentication/login_form/log_in_form_bloc.dart';
 import 'package:invitations_project/injection.dart';
-import 'package:invitations_project/views/account/widgets/email_text_field.dart';
-import 'package:invitations_project/views/account/widgets/login_failure_message.dart';
-import 'package:invitations_project/views/account/widgets/password_text_field.dart';
+import 'package:invitations_project/views/authentication/widgets/email_text_field.dart';
+import 'package:invitations_project/views/authentication/widgets/log_in_apple_button.dart';
+import 'package:invitations_project/views/authentication/widgets/log_in_google_button.dart';
+import 'package:invitations_project/views/authentication/widgets/login_failure_message.dart';
+import 'package:invitations_project/views/authentication/widgets/password_text_field.dart';
 import 'package:logger/logger.dart';
 
 class LoginForm extends StatelessWidget {
@@ -15,6 +17,9 @@ class LoginForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<LogInFormBloc, LogInFormState>(
+      listenWhen: (previous, current) =>
+          previous.failureOrSuccessOption != current.failureOrSuccessOption ||
+          current.thirdPartyUserOption.isSome(),
       listener: _listener,
       builder: (context, state) => Form(
         autovalidateMode: state.showErrorMessages
@@ -30,7 +35,7 @@ class LoginForm extends StatelessWidget {
                     LogInFormEvent.emailChanged(value),
                   ),
             ),
-            const SizedBox(height: 5),
+            const SizedBox(height: 16),
             PasswordTextField(
               eventToAdd: (String value) => context.read<LogInFormBloc>().add(
                     LogInFormEvent.passwordChanged(value),
@@ -38,6 +43,14 @@ class LoginForm extends StatelessWidget {
               validator: (_) => _passwordValidator(state),
             ),
             LoginFailureMessage(option: state.failureOrSuccessOption),
+            const SizedBox(height: 16),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                LogInGoogleButton(),
+                LogInAppleButton(),
+              ],
+            )
           ],
         ),
       ),
@@ -64,17 +77,19 @@ class LoginForm extends StatelessWidget {
         (_) => "",
       );
 
-  void _listener(BuildContext context, LogInFormState state) {
-    state.failureOrSuccessOption.fold(
-      () {},
-      (either) => either.fold(
-        (failure) => getIt<Logger>().e(
-          "Error logging in: $failure",
+  void _listener(BuildContext context, LogInFormState state) =>
+      state.thirdPartyUserOption.fold(
+        () => state.failureOrSuccessOption.fold(
+          () {},
+          (either) => either.fold(
+            (failure) => getIt<Logger>().e(
+              "Error logging in: $failure",
+            ),
+            (_) => _onSuccess(context),
+          ),
         ),
         (_) => _onSuccess(context),
-      ),
-    );
-  }
+      );
 
   void _onSuccess(BuildContext context) {
     context.router.maybePop();

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:invitations_project/views/account/validator_typedef.dart';
+import 'package:invitations_project/views/core/validator_typedef.dart';
 
 class EmailTextField extends StatelessWidget {
   const EmailTextField({

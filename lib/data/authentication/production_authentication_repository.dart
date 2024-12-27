@@ -46,17 +46,10 @@ class ProductionAuthenticationRepository
       }
       await _firebaseAuth.currentUser?.delete();
       return right(unit);
-    } on FirebaseAuthException catch (_) {
-      return left(
-        const Failure.data(
-          DataFailure.cancelledByUser(),
-        ),
-      );
-    } on PlatformException catch (exception) {
-      _logger.e(exception.message);
+    } catch (exception) {
       return left(
         Failure.data(
-          DataFailure.serverError(errorString: exception.message!),
+          DataFailure.serverError(errorString: exception.toString()),
         ),
       );
     }
@@ -64,11 +57,11 @@ class ProductionAuthenticationRepository
 
   @override
   Future<Option<entity.User>> getLoggedInUser() async {
-    final firebaseCurrentUser = _firebaseAuth.currentUser;
-    if (firebaseCurrentUser != null) {
+    try {
       final user = await _firestore.currentUser();
       return some(user);
-    } else {
+    } catch (exception) {
+      _logger.e("Error getting the logged in user: $exception");
       return none();
     }
   }
@@ -98,13 +91,20 @@ class ProductionAuthenticationRepository
           ),
         );
       } else {
-        _logger.e(exception.message);
+        _logger.e(exception.toString());
         return left(
           Failure.data(
-            DataFailure.serverError(errorString: exception.message!),
+            DataFailure.serverError(errorString: exception.toString()),
           ),
         );
       }
+    } on PlatformException catch (exception) {
+      _logger.e(exception.toString());
+      return left(
+        Failure.data(
+          DataFailure.serverError(errorString: exception.toString()),
+        ),
+      );
     }
   }
 
@@ -128,21 +128,30 @@ class ProductionAuthenticationRepository
           accessToken: googleAuthentication.accessToken,
         );
         await _firebaseAuth.signInWithCredential(credential);
-        final userIsRegistered = await _firestore.userExistsInCollection(
-          googleUser.email,
-        );
-        if (!userIsRegistered) {
-          final user = entity.User.empty().copyWith(
-            email: EmailAddress(googleUser.email),
-            invitationsIds: {},
-            lastLogin: PastDate(DateTime.now()),
-            creationDate: PastDate(DateTime.now()),
+        final firebaseUser = _firebaseAuth.currentUser;
+        if (firebaseUser != null) {
+          final email = firebaseUser.email!;
+          final registered = await _firestore.userExistsInCollection(email);
+          if (!registered) {
+            final user = entity.User.empty().copyWith(
+              email: EmailAddress(email),
+              invitationsIds: {},
+              lastLogin: PastDate(DateTime.now()),
+              creationDate: PastDate(DateTime.now()),
+            );
+            await _firestore.userCollection.doc(user.id.getOrCrash()).set(
+                  UserDto.fromDomain(user),
+                );
+          }
+          return right(none());
+        } else {
+          // In principle this should never happen as _firebaseAuth signs in immediately after google
+          return left(
+            const Failure.data(
+              DataFailure.serverError(errorString: "Null Firebase user"),
+            ),
           );
-          await _firestore.userCollection.doc(user.id.getOrCrash()).set(
-                UserDto.fromDomain(user),
-              );
         }
-        return right(none());
       } else {
         return left(
           const Failure.data(
@@ -157,20 +166,22 @@ class ProductionAuthenticationRepository
         ),
       );
     } on PlatformException catch (exception) {
-      _logger.e(exception.message);
+      _logger.e(exception.toString());
       return left(
         Failure.data(
-          DataFailure.serverError(errorString: exception.message!),
+          DataFailure.serverError(errorString: exception.toString()),
         ),
       );
     }
   }
 
   @override
-  Future<void> logOut() async => Future.wait([
-        _googleSignIn.signOut(),
-        _firebaseAuth.signOut(),
-      ]);
+  Future<void> logOut() async => Future.wait(
+        [
+          _googleSignIn.signOut(),
+          _firebaseAuth.signOut(),
+        ],
+      );
 
   @override
   Future<Either<Failure, Unit>> register({
@@ -196,6 +207,8 @@ class ProductionAuthenticationRepository
             );
         return right(unit);
       } else {
+        // In principle this should never happen as _firebaseAuth would have
+        // thrown an exception when calling createUserWithEmailAndPassword
         return left(
           const Failure.data(
             DataFailure.serverError(errorString: "Null Firebase user"),
@@ -212,15 +225,20 @@ class ProductionAuthenticationRepository
           ),
         );
       } else {
-        _logger.e(exception.message);
+        _logger.e(exception.toString());
         return left(
           Failure.data(
-            DataFailure.serverError(
-              errorString: exception.message!,
-            ),
+            DataFailure.serverError(errorString: exception.toString()),
           ),
         );
       }
+    } on PlatformException catch (exception) {
+      _logger.e(exception.toString());
+      return left(
+        Failure.data(
+          DataFailure.serverError(errorString: exception.toString()),
+        ),
+      );
     }
   }
 
@@ -231,17 +249,11 @@ class ProductionAuthenticationRepository
         email: emailAddress.getOrCrash(),
       );
       return right(unit);
-    } on FirebaseAuthException catch (exception) {
+    } catch (exception) {
+      _logger.e(exception.toString());
       return left(
         Failure.data(
-          DataFailure.serverError(errorString: exception.message!),
-        ),
-      );
-    } on PlatformException catch (exception) {
-      _logger.e(exception.message);
-      return left(
-        Failure.data(
-          DataFailure.serverError(errorString: exception.message!),
+          DataFailure.serverError(errorString: exception.toString()),
         ),
       );
     }

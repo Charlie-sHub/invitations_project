@@ -49,7 +49,7 @@ extension FirestoreX on FirebaseFirestore {
           isEqualTo: email,
         )
         .get();
-    return query.docs.first.exists;
+    return query.docs.isNotEmpty;
   }
 
   CollectionReference<InvitationDto> get invitationCollection =>

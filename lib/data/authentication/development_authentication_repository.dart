@@ -8,6 +8,7 @@ import 'package:invitations_project/domain/core/validation/objects/email_address
 import 'package:invitations_project/domain/core/validation/objects/password.dart';
 
 /// Simple repository to work in dev, does nothing except return success
+// TODO: Modify the dev repositories to use FakeFirebaseFirestore
 @LazySingleton(
   as: AuthenticationRepositoryInterface,
   env: [Environment.dev],

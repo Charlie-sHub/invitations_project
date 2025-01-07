@@ -61,7 +61,7 @@ class ProductionAuthenticationRepository
       final user = await _firestore.currentUser();
       return some(user);
     } catch (exception) {
-      _logger.e("Error getting the logged in user: $exception");
+      _logger.w("User is not authenticated");
       return none();
     }
   }
@@ -78,20 +78,20 @@ class ProductionAuthenticationRepository
       );
       return right(unit);
     } on FirebaseAuthException catch (exception) {
-      if (exception.code == "ERROR_WRONG_PASSWORD") {
+      if (exception.code == "wrong-password") {
         return left(
           const Failure.data(
             DataFailure.invalidCredentials(),
           ),
         );
-      } else if (exception.code == "ERROR_USER_NOT_FOUND") {
+      } else if (exception.code == "user-not-found") {
         return left(
           const Failure.data(
             DataFailure.unregisteredUser(),
           ),
         );
       } else {
-        _logger.e(exception.toString());
+        _logger.e("General Firebase Error: $exception");
         return left(
           Failure.data(
             DataFailure.serverError(errorString: exception.toString()),
@@ -216,7 +216,7 @@ class ProductionAuthenticationRepository
         );
       }
     } on FirebaseAuthException catch (exception) {
-      if (exception.code == "ERROR_EMAIL_ALREADY_IN_USE") {
+      if (exception.code == "email-already-in-use") {
         return left(
           Failure.data(
             DataFailure.emailAlreadyInUse(

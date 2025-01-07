@@ -36,7 +36,10 @@ void main() {
       storage = MockStorage();
       mocktail
           .when(
-            () => storage.write(mocktail.any(), mocktail.any<dynamic>()),
+            () => storage.write(
+              mocktail.any(),
+              mocktail.any<dynamic>(),
+            ),
           )
           .thenAnswer((_) async {});
       HydratedBloc.storage = storage;
@@ -95,12 +98,13 @@ void main() {
       when(mockRepository.purchase()).thenAnswer(
         (_) async => right(unit),
       );
-      cartBloc.add(CartEvent.addedInvitation(invitation));
       return cartBloc;
     },
+    seed: () => CartState.initial().copyWith(
+      invitationOption: some(invitation),
+    ),
     act: (bloc) => bloc.add(const CartEvent.purchased()),
     verify: (_) => mockRepository.saveInvitation(invitation),
-    skip: 1,
     expect: () => [
       CartState.initial().copyWith(
         invitationOption: some(invitation),
@@ -123,12 +127,13 @@ void main() {
       when(mockRepository.saveInvitation(invitation)).thenAnswer(
         (_) async => left(failure),
       );
-      cartBloc.add(CartEvent.addedInvitation(invitation));
       return cartBloc;
     },
+    seed: () => CartState.initial().copyWith(
+      invitationOption: some(invitation),
+    ),
     act: (bloc) => bloc.add(const CartEvent.purchased()),
     verify: (_) => mockRepository.saveInvitation(invitation),
-    skip: 1,
     expect: () => [
       CartState.initial().copyWith(
         invitationOption: some(invitation),
@@ -151,12 +156,13 @@ void main() {
       when(mockRepository.saveInvitation(invitation)).thenAnswer(
         (_) async => left(failure),
       );
-      cartBloc.add(CartEvent.addedInvitation(invitation));
       return cartBloc;
     },
+    seed: () => CartState.initial().copyWith(
+      invitationOption: some(invitation),
+    ),
     act: (bloc) => bloc.add(const CartEvent.purchased()),
     verify: (_) => mockRepository.saveInvitation(invitation),
-    skip: 1,
     expect: () => [
       CartState.initial().copyWith(
         invitationOption: some(invitation),
@@ -182,12 +188,13 @@ void main() {
       when(mockRepository.purchase()).thenAnswer(
         (_) async => left(failure),
       );
-      cartBloc.add(CartEvent.addedInvitation(invitation));
       return cartBloc;
     },
+    seed: () => CartState.initial().copyWith(
+      invitationOption: some(invitation),
+    ),
     act: (bloc) => bloc.add(const CartEvent.purchased()),
     verify: (_) => mockRepository.deleteInvitation(invitation.id),
-    skip: 1,
     expect: () => [
       CartState.initial().copyWith(
         invitationOption: some(invitation),

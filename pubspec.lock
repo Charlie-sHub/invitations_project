@@ -555,6 +555,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.24"
+  flutter_stripe:
+    dependency: "direct main"
+    description:
+      name: flutter_stripe
+      sha256: "06d7d8ac853470b7c9a9ed81f9fccafaf35f417a151e1b7ddcded56113aadf6f"
+      url: "https://pub.dev"
+    source: hosted
+    version: "11.3.0"
+  flutter_stripe_web:
+    dependency: "direct main"
+    description:
+      name: flutter_stripe_web
+      sha256: c555abcef31b3ef9ec12efb7c706f8d400124a35237831a1252e01aa1af742e7
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.3.0"
   flutter_svg:
     dependency: transitive
     description:
@@ -789,38 +805,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.2.1+1"
-  in_app_purchase:
-    dependency: "direct main"
-    description:
-      name: in_app_purchase
-      sha256: "960f26a08d9351fb8f89f08901f8a829d41b04d45a694b8f776121d9e41dcad6"
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.2.0"
-  in_app_purchase_android:
-    dependency: transitive
-    description:
-      name: in_app_purchase_android
-      sha256: fa1befc0e25374d16ca532154546503f25a865ed6e7ea5641f4f2b75b092d669
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.3.6+12"
-  in_app_purchase_platform_interface:
-    dependency: transitive
-    description:
-      name: in_app_purchase_platform_interface
-      sha256: "1d353d38251da5b9fea6635c0ebfc6bb17a2d28d0e86ea5e083bf64244f1fb4c"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.4.0"
-  in_app_purchase_storekit:
-    dependency: transitive
-    description:
-      name: in_app_purchase_storekit
-      sha256: "250b3865da1f4abf0d0e1eda9556734ee22ab5ebfe47a59227d8d9aeaa1c03e8"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.3.20+2"
   injectable:
     dependency: "direct main"
     description:
@@ -1314,6 +1298,38 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.3.0"
+  stripe_android:
+    dependency: transitive
+    description:
+      name: stripe_android
+      sha256: bc919b07ba1560b25a69002f9ca67a5973f12bfb96f78033cf9bd6c561f1aa10
+      url: "https://pub.dev"
+    source: hosted
+    version: "11.3.0"
+  stripe_ios:
+    dependency: transitive
+    description:
+      name: stripe_ios
+      sha256: "734a7668babd85a451c8049f0dfa8ca5dc6d80f85600d29732e7fa703dd5ec5e"
+      url: "https://pub.dev"
+    source: hosted
+    version: "11.3.0"
+  stripe_js:
+    dependency: transitive
+    description:
+      name: stripe_js
+      sha256: d12c628c82e0cea0f5c93c7751c8b01d5ef25f417797c270cd62713564cdee6f
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.2.1"
+  stripe_platform_interface:
+    dependency: transitive
+    description:
+      name: stripe_platform_interface
+      sha256: "5cb987074b6ee199e7dd1b81d189c87583f6eaeb19147ffc8c15bc009596e6ce"
+      url: "https://pub.dev"
+    source: hosted
+    version: "11.3.0"
   synchronized:
     dependency: transitive
     description:

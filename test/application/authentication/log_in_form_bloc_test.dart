@@ -72,14 +72,12 @@ void main() {
               password: anyNamed('password'),
             ),
           ).thenAnswer((_) async => right(unit));
-          logInFormBloc.emit(
-            LogInFormState.initial().copyWith(
-              email: EmailAddress(email),
-              password: Password(password),
-            ),
-          );
           return logInFormBloc;
         },
+        seed: () => LogInFormState.initial().copyWith(
+          email: EmailAddress(email),
+          password: Password(password),
+        ),
         act: (bloc) {
           bloc.add(const LogInFormEvent.registered());
         },
@@ -163,14 +161,12 @@ void main() {
               password: anyNamed('password'),
             ),
           ).thenAnswer((_) async => left(failure));
-          logInFormBloc.emit(
-            LogInFormState.initial().copyWith(
-              email: EmailAddress(email),
-              password: Password(password),
-            ),
-          );
           return logInFormBloc;
         },
+        seed: () => LogInFormState.initial().copyWith(
+          email: EmailAddress(email),
+          password: Password(password),
+        ),
         act: (bloc) => bloc.add(const LogInFormEvent.registered()),
         verify: (_) => mockRepository.register(
           email: EmailAddress(email),
@@ -200,14 +196,12 @@ void main() {
           when(mockRepository.logInGoogle()).thenAnswer(
             (_) async => left(failure),
           );
-          logInFormBloc.emit(
-            LogInFormState.initial().copyWith(
-              email: EmailAddress(email),
-              password: Password(password),
-            ),
-          );
           return logInFormBloc;
         },
+        seed: () => LogInFormState.initial().copyWith(
+          email: EmailAddress(email),
+          password: Password(password),
+        ),
         act: (bloc) => bloc.add(const LogInFormEvent.loggedInGoogle()),
         verify: (_) => mockRepository.logInGoogle(),
         expect: () => [
@@ -228,14 +222,12 @@ void main() {
           when(mockRepository.logInApple()).thenAnswer(
             (_) async => left(failure),
           );
-          logInFormBloc.emit(
-            LogInFormState.initial().copyWith(
-              email: EmailAddress(email),
-              password: Password(password),
-            ),
-          );
           return logInFormBloc;
         },
+        seed: () => LogInFormState.initial().copyWith(
+          email: EmailAddress(email),
+          password: Password(password),
+        ),
         act: (bloc) => bloc.add(const LogInFormEvent.loggedInApple()),
         verify: (_) => mockRepository.logInApple(),
         expect: () => [

@@ -10,12 +10,6 @@ import 'firebase_options.dart';
 
 Future<void> mainCommon(String environment) async {
   WidgetsFlutterBinding.ensureInitialized();
-  /*
-  In app purchasing in android requires this
-  if (defaultTargetPlatform == TargetPlatform.android) {
-    InAppPurchaseAndroidPlatformAddition.enablePendingPurchases();
-  }
-   */
   configureDependencies(environment);
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,

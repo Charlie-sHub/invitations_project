@@ -11,6 +11,12 @@ extension FirestoreX on FirebaseFirestore {
     return invitationCollection.doc(id);
   }
 
+  Future<InvitationDto?> invitationDto(String id) async {
+    final reference = invitationCollection.doc(id);
+    final snapshot = await reference.get();
+    return snapshot.data();
+  }
+
   Future<DocumentReference<UserDto>> currentUserRef() async {
     final firebaseAuthInstance = getIt<FirebaseAuth>();
     final firebaseUser = firebaseAuthInstance.currentUser;

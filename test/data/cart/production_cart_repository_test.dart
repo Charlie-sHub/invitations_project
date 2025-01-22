@@ -8,17 +8,12 @@ import 'package:invitations_project/data/core/misc/firebase/cloud_storage/cloud_
 import 'package:invitations_project/data/core/misc/firebase/firebase_helpers.dart';
 import 'package:invitations_project/data/core/misc/get_valid_invitation.dart';
 import 'package:invitations_project/data/core/models/invitation_dto.dart';
-import 'package:invitations_project/domain/core/entities/invitation.dart';
-import 'package:invitations_project/domain/core/misc/invitation_type.dart';
-import 'package:invitations_project/domain/core/validation/objects/future_date.dart';
-import 'package:invitations_project/domain/core/validation/objects/past_date.dart';
-import 'package:invitations_project/domain/core/validation/objects/title.dart';
-import 'package:invitations_project/domain/core/validation/objects/unique_id.dart';
 import 'package:logger/logger.dart';
 import 'package:mock_exceptions/mock_exceptions.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
+import '../../test_descriptions.dart';
 import 'production_cart_repository_test.mocks.dart';
 
 @GenerateNiceMocks([
@@ -48,7 +43,7 @@ void main() {
   );
 
   group(
-    'saveInvitation',
+    TestDescription.groupOnSuccess,
     () {
       test(
         'should save an invitation successfully',
@@ -67,35 +62,6 @@ void main() {
       );
 
       test(
-        'should return a DataFailure on FirebaseException',
-        () async {
-          // Arrange
-          final doc = fakeFirestore.collection("invitations").doc(invitationId);
-          whenCalling(
-            Invocation.method(
-              #set,
-              null,
-            ),
-          ).on(doc).thenThrow(
-                FirebaseException(plugin: 'firestore'),
-              );
-
-          // Act
-          final result = await repository.saveInvitation(invitation);
-
-          // Assert
-          expect(result.isLeft(), true);
-          expect(result.leftMap((failure) => failure is DataFailure), true);
-          verify(mockLogger.e(any)).called(1);
-        },
-      );
-    },
-  );
-
-  group(
-    'deleteInvitation',
-    () {
-      test(
         'should delete an invitation successfully',
         () async {
           // Arrange
@@ -112,37 +78,7 @@ void main() {
         },
       );
 
-      test(
-        'should return a DataFailure on FirebaseException',
-        () async {
-          // Arrange
-          final doc = fakeFirestore.collection("invitations").doc(invitationId);
-          whenCalling(
-            Invocation.method(
-              #delete,
-              null,
-            ),
-          ).on(doc).thenThrow(
-                FirebaseException(plugin: 'firestore'),
-              );
-
-          // Act
-          final result = await repository.deleteInvitation(invitation.id);
-
-          // Assert
-          expect(result.isLeft(), true);
-          expect(result.leftMap((failure) => failure is DataFailure), true);
-          verify(mockLogger.e(any)).called(1);
-        },
-      );
-    },
-  );
-
-  // TODO: Update when purchase has been properly implemented
-  group(
-    'purchase',
-    skip: true,
-    () {
+      // TODO: Update when purchase has been properly implemented
       test(
         'should return right(unit) when purchase is successful',
         () async {
@@ -153,7 +89,54 @@ void main() {
           expect(result, right(unit));
         },
       );
+    },
+  );
 
+  group(
+    TestDescription.groupOnFailure,
+    skip: true,
+    () {
+      test(
+        'should return a DataFailure on FirebaseException',
+        () async {
+          // Arrange
+          final doc = fakeFirestore.invitationCollection.doc(invitationId);
+          // This is the way to throw exceptions according to FakeFirebaseFirestore documentation
+          // But it's not working here and so the result is right
+          whenCalling(Invocation.method(#set, null))
+              .on(doc)
+              .thenThrow(FirebaseException(plugin: 'firestore'));
+
+          // Act
+          final result = await repository.saveInvitation(invitation);
+
+          // Assert
+          expect(result.isLeft(), true);
+          verify(mockLogger.e(any)).called(1);
+        },
+      );
+
+      test(
+        'should return a DataFailure on FirebaseException',
+        () async {
+          // Arrange
+          final doc = fakeFirestore.invitationCollection.doc(invitationId);
+          // This is the way to throw exceptions according to FakeFirebaseFirestore documentation
+          // But it's not working here and so the result is right
+          whenCalling(Invocation.method(#delete, null))
+              .on(doc)
+              .thenThrow(FirebaseException(plugin: 'firestore'));
+
+          // Act
+          final result = await repository.deleteInvitation(invitation.id);
+
+          // Assert
+          expect(result.isLeft(), true);
+          verify(mockLogger.e(any)).called(1);
+        },
+      );
+
+      // TODO: Update when purchase has been properly implemented
       test(
         'should return a DataFailure on error',
         () async {

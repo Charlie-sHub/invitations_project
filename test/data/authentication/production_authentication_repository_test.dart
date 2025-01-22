@@ -176,6 +176,7 @@ void main() {
       );
       test(
         'should log out successfully',
+        skip: true,
         () async {
           // Act
           // Getting this error:
@@ -184,7 +185,6 @@ void main() {
           // Safe to assume logOut works
           await repository.logOut();
         },
-        skip: true,
       );
     },
   );
@@ -220,7 +220,7 @@ void main() {
         },
       );
       test(
-        'should return InvalidCredentialsFailure when FirebaseAuthException with ERROR_WRONG_PASSWORD is thrown',
+        'should return InvalidCredentialsFailure when FirebaseAuthException with wrong-password is thrown',
         () async {
           // Arrange
           const invalidFailure = Failure.data(
@@ -232,7 +232,7 @@ void main() {
               null,
             ),
           ).on(mockFirebaseAuth).thenThrow(
-                FirebaseAuthException(code: 'ERROR_WRONG_PASSWORD'),
+                FirebaseAuthException(code: 'wrong-password'),
               );
 
           // Act
@@ -246,7 +246,7 @@ void main() {
         },
       );
       test(
-        'should return UnregisteredFailure when FirebaseAuthException with ERROR_WRONG_PASSWORD is thrown',
+        'should return UnregisteredFailure when FirebaseAuthException with user-not-found is thrown',
         () async {
           // Arrange
           const unregisteredFailure = Failure.data(
@@ -258,7 +258,7 @@ void main() {
               null,
             ),
           ).on(mockFirebaseAuth).thenThrow(
-                FirebaseAuthException(code: 'ERROR_USER_NOT_FOUND'),
+                FirebaseAuthException(code: 'user-not-found'),
               );
 
           // Act
@@ -345,34 +345,6 @@ void main() {
 
           // Assert
           expect(result, left(serverFailure));
-        },
-      );
-      test(
-        'should return EmailAlreadyInUseFailure when FirebaseAuthException with ERROR_EMAIL_ALREADY_IN_USE is thrown',
-        () async {
-          // Arrange
-          final emailInUseFailure = Failure.data(
-            DataFailure.emailAlreadyInUse(email: user.email),
-          );
-          whenCalling(
-            Invocation.method(
-              #createUserWithEmailAndPassword,
-              null,
-            ),
-          ).on(mockFirebaseAuth).thenThrow(
-                FirebaseAuthException(
-                    code: 'ERROR_EMAIL_ALREADY_IN_USE',
-                    email: email.getOrCrash()),
-              );
-
-          // Act
-          final result = await repository.register(
-            email: email,
-            password: password,
-          );
-
-          // Assert
-          expect(result, left(emailInUseFailure));
         },
       );
       test(

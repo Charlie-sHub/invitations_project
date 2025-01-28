@@ -94,7 +94,7 @@ class ProductionCartRepository implements CartRepositoryInterface {
       _logger.e("Unknown Exception: ${error.runtimeType}");
       return left(
         const Failure.data(
-          DataFailure.serverError(errorString: "Unknown  server error"),
+          DataFailure.serverError(errorString: "Unknown server error"),
         ),
       );
     }

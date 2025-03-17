@@ -14,7 +14,7 @@ class ValueFailure<T> with _$ValueFailure<T> {
       InvalidPassword<T>;
 
   const factory ValueFailure.invalidTitle({required String failedValue}) =
-      invalidTitle<T>;
+      InvalidTitle<T>;
 
   const factory ValueFailure.emptyString({required String failedValue}) =
       EmptyString<T>;

@@ -1,76 +1,60 @@
-include: package:lints/core.yaml
+include: package:very_good_analysis/analysis_options.yaml
 
 linter:
   rules:
-    - annotate_overrides
-    - avoid_function_literals_in_foreach_calls
-    - avoid_init_to_null
-    - avoid_renaming_method_parameters
-    - avoid_return_types_on_setters
-    - avoid_returning_null_for_void
-    - avoid_single_cascade_in_expression_statements
-    - constant_identifier_names
-    - control_flow_in_finally
-    - empty_constructor_bodies
-    - empty_statements
-    - exhaustive_cases
-    - implementation_imports
-    - invalid_runtime_check_with_js_interop_types
-    - library_prefixes
-    - library_private_types_in_public_api
-    - no_leading_underscores_for_library_prefixes
-    - no_leading_underscores_for_local_identifiers
-    - null_closures
-    - overridden_fields
-    - package_names
-    - prefer_adjacent_string_concatenation
-    - prefer_collection_literals
-    - prefer_conditional_assignment
-    - prefer_contains
-    - prefer_final_fields
-    - prefer_for_elements_to_map_fromIterable
-    - prefer_function_declarations_over_variables
-    - prefer_if_null_operators
-    - prefer_initializing_formals
-    - prefer_inlined_adds
-    - prefer_interpolation_to_compose_strings
-    - prefer_is_not_operator
-    - prefer_null_aware_operators
-    - prefer_spread_collections
-    - recursive_getters
-    - slash_for_doc_comments
-    - type_init_formals
-    - unnecessary_brace_in_string_interps
-    - unnecessary_const
-    - unnecessary_constructor_name
-    - unnecessary_getters_setters
-    - unnecessary_late
-    - unnecessary_library_name
-    - unnecessary_new
-    - unnecessary_null_aware_assignments
-    - unnecessary_null_in_if_null_operators
-    - unnecessary_nullable_for_final_variable_declarations
-    - unnecessary_string_escapes
-    - unnecessary_string_interpolations
-    - unnecessary_this
-    - unnecessary_to_list_in_spreads
-    - use_function_type_syntax_for_parameters
-    - use_rethrow_when_possible
-    - use_super_parameters
-    - prefer_const_declarations
+    - always_use_package_imports
     - avoid_print
+    - avoid_function_literals_in_foreach_calls
+    - prefer_final_locals
+    - prefer_final_fields
+    - prefer_single_quotes
+    - prefer_const_declarations
+    - prefer_expression_function_bodies
+    - unnecessary_this
+    - use_super_parameters
+    - avoid_redundant_argument_values
+    - omit_local_variable_types
+    - sort_constructors_first
+    - sort_unnamed_constructors_first
+    - avoid_classes_with_only_static_members
+    - require_trailing_commas
+    - lines_longer_than_80_chars
+    - directives_ordering
 
 analyzer:
   exclude:
     - "**/*.g.dart"
     - "**/*.gr.dart"
+    - "**/*.config.dart"
+    - "**/*.mocks.dart"
     - "**/*.freezed.dart"
     - "lib/generated/**"
     - "lib/injection.config.dart"
-    - "test"
+    - "**/generated_plugin_registrant.dart" # Flutter plugin files
+    - "**/firebase_options.dart" # Firebase config
+    - "build/**"
+    - ".dart_tool/**"
+    - ".idea/**"
+    - ".vscode/**"
+    - "ios/**"
+    - "android/**"
+
   errors:
     missing_return: error
     missing_required_param: error
     parameter_assignments: error
     must_be_immutable: error
     sort_unnamed_constructors_first: ignore
+    prefer_relative_imports: ignore
+    always_use_package_imports: error
+    inference_failure_on_function_invocation: ignore
+    inference_failure_on_instance_creation: ignore
+    strict_raw_type: ignore
+    one_member_abstracts: ignore
+    flutter_style_todos: ignore
+
+coverage:
+  ignore:
+    - "**/*.g.dart"
+    - "**/freezed.dart"
+    - "**/config.dart"

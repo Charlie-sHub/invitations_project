@@ -16,7 +16,6 @@ part 'log_in_form_bloc.freezed.dart';
 
 @injectable
 class LogInFormBloc extends Bloc<LogInFormEvent, LogInFormState> {
-  final AuthenticationRepositoryInterface _repository;
 
   LogInFormBloc(this._repository) : super(LogInFormState.initial()) {
     on<LogInFormEvent>(
@@ -29,7 +28,7 @@ class LogInFormBloc extends Bloc<LogInFormEvent, LogInFormState> {
         ),
         passwordChanged: (event) => emit(
           state.copyWith(
-            password: Password(event.email),
+            password: Password(event.password),
             failureOrSuccessOption: none(),
           ),
         ),
@@ -52,6 +51,7 @@ class LogInFormBloc extends Bloc<LogInFormEvent, LogInFormState> {
       ),
     );
   }
+  final AuthenticationRepositoryInterface _repository;
 
   Future<void> _performActionOnRepository({
     required Future<Either<Failure, Unit>> Function({

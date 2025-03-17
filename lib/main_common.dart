@@ -8,6 +8,7 @@ import 'package:invitations_project/views/core/widgets/app_widget.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
+/// Common entry point for the application.
 Future<void> mainCommon(String environment) async {
   WidgetsFlutterBinding.ensureInitialized();
   configureDependencies(environment);
@@ -16,8 +17,8 @@ Future<void> mainCommon(String environment) async {
   );
   HydratedBloc.storage = await HydratedStorage.build(
     storageDirectory: kIsWeb
-        ? HydratedStorage.webStorageDirectory
-        : await getApplicationDocumentsDirectory(),
+        ? HydratedStorageDirectory.web
+        : HydratedStorageDirectory((await getTemporaryDirectory()).path),
   );
   runApp(
     Provider(

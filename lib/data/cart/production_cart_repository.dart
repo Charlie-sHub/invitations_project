@@ -11,20 +11,22 @@ import 'package:invitations_project/domain/core/entities/invitation.dart';
 import 'package:invitations_project/domain/core/validation/objects/unique_id.dart';
 import 'package:logger/logger.dart';
 
+/// Production implementation of [CartRepositoryInterface]
 @LazySingleton(
   as: CartRepositoryInterface,
   env: [Environment.prod],
 )
 class ProductionCartRepository implements CartRepositoryInterface {
-  final Logger _logger;
-  final FirebaseFirestore _firestore;
-  final CloudStorageService _cloudStorage;
-
+  /// Default constructor
   ProductionCartRepository(
     this._logger,
     this._firestore,
     this._cloudStorage,
   );
+
+  final Logger _logger;
+  final FirebaseFirestore _firestore;
+  final CloudStorageService _cloudStorage;
 
   @override
   Future<Either<Failure, Unit>> purchase() async {
@@ -32,7 +34,7 @@ class ProductionCartRepository implements CartRepositoryInterface {
       // TODO: Implement purchases
       // Once there's a Stripe business account and the Blaze plan for Firebase
       return right(unit);
-    } catch (error) {
+    } on Exception catch (error) {
       return _onError(error);
     }
   }
@@ -49,9 +51,9 @@ class ProductionCartRepository implements CartRepositoryInterface {
         _cloudStorage.deleteImage(_imageUrl);
       }
        */
-      reference.delete();
+      await reference.delete();
       return right(unit);
-    } catch (error) {
+    } on Exception catch (error) {
       return _onError(error);
     }
   }
@@ -73,28 +75,30 @@ class ProductionCartRepository implements CartRepositoryInterface {
       }
        */
       final invitationDto = InvitationDto.fromDomain(invitation);
-      _firestore.invitationCollection.doc(invitationDto.id).set(invitationDto);
+      await _firestore.invitationCollection.doc(invitationDto.id).set(
+            invitationDto,
+          );
       return right(unit);
-    } catch (error) {
+    } on Exception catch (error) {
       return _onError(error);
     }
   }
 
   Either<Failure, T> _onError<T>(dynamic error) {
     if (error is FirebaseException) {
-      _logger.e("FirebaseException: ${error.message}");
+      _logger.e('FirebaseException: ${error.message}');
       return left(
         Failure.data(
           DataFailure.serverError(
-            errorString: "Firebase error: ${error.message}",
+            errorString: 'Firebase error: ${error.message}',
           ),
         ),
       );
     } else {
-      _logger.e("Unknown Exception: ${error.runtimeType}");
+      _logger.e('Unknown Exception: ${error.runtimeType}');
       return left(
         const Failure.data(
-          DataFailure.serverError(errorString: "Unknown server error"),
+          DataFailure.serverError(errorString: 'Unknown server error'),
         ),
       );
     }

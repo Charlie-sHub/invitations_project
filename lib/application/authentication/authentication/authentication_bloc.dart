@@ -13,7 +13,6 @@ part 'authentication_bloc.freezed.dart';
 @injectable
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
-  final AuthenticationRepositoryInterface _repository;
 
   AuthenticationBloc(this._repository)
       : super(const AuthenticationState.initial()) {
@@ -24,7 +23,7 @@ class AuthenticationBloc
           emit(
             userOption.fold(
               () => const AuthenticationState.unAuthenticated(),
-              (user) => AuthenticationState.authenticated(user),
+              AuthenticationState.authenticated,
             ),
           );
           return null;
@@ -37,4 +36,5 @@ class AuthenticationBloc
       ),
     );
   }
+  final AuthenticationRepositoryInterface _repository;
 }

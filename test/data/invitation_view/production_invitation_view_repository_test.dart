@@ -21,12 +21,12 @@ void main() {
   late FakeFirebaseFirestore fakeFirestore;
   late ProductionInvitationViewRepository repository;
 
-  final notFoundFailure = Failure.data(
+  const notFoundFailure = Failure.data(
     DataFailure.notFoundError(),
   );
 
-  final serverFailure = Failure.data(
-    DataFailure.serverError(errorString: "Firebase error: null"),
+  const serverFailure = Failure.data(
+    DataFailure.serverError(errorString: 'Firebase error: null'),
   );
 
   setUp(
@@ -55,7 +55,7 @@ void main() {
 
       // Assert
       expect(result.isRight(), true);
-      expect(result.getOrElse(() => Invitation.empty()), invitation);
+      expect(result.getOrElse(Invitation.empty), invitation);
     },
   );
 

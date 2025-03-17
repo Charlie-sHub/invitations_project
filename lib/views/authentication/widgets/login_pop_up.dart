@@ -7,22 +7,20 @@ class LoginPopUp extends StatelessWidget {
   const LoginPopUp({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
-      title: Center(
-        child: const Text('Login'),
+  Widget build(BuildContext context) => AlertDialog(
+      title: const Center(
+        child: Text('Login'),
       ),
-      content: LoginForm(),
+      content: const LoginForm(),
       actionsAlignment: MainAxisAlignment.spaceAround,
       actions: [
         TextButton(
           onPressed: () => context.router.maybePop(),
           child: const Text('Cancelar'),
         ),
-        LoginOrRegisterButton(),
+        const LoginOrRegisterButton(),
       ],
     );
-  }
 }
 
 /*

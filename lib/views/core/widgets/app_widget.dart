@@ -27,12 +27,12 @@ class AppWidget extends StatelessWidget {
         BlocProvider(
           create: (context) => getIt<AuthenticationBloc>()
             ..add(
-              AuthenticationEvent.authenticationCheckRequested(),
+              const AuthenticationEvent.authenticationCheckRequested(),
             ),
         ),
       ],
       child: MaterialApp.router(
-        title: "Invitaciones",
+        title: 'Invitaciones',
         debugShowCheckedModeBanner: showBanner,
         theme: ThemeData().copyWith(),
         routerDelegate: _router.delegate(),

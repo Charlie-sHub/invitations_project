@@ -3,20 +3,20 @@ import 'package:invitations_project/domain/core/failures/value_failure.dart';
 import 'package:invitations_project/domain/core/validation/validators/validate_string_length.dart';
 
 void main() {
-  const validString = "TestTest";
-  const invalidString = "TestTestTest";
+  const validString = 'TestTest';
+  const invalidString = 'TestTestTest';
   const length = 10;
   test(
-    "Should return validString",
+    'Should return validString',
     () async {
       // Act
-      final Object result = _act(validString, length);
+      final result = _act(validString, length);
       // Assert
       expect(result, validString);
     },
   );
   test(
-    "Should return StringExceedsLength",
+    'Should return StringExceedsLength',
     () async {
       // Arrange
       const valueFailure = ValueFailure<String>.stringExceedsLength(
@@ -24,7 +24,7 @@ void main() {
         maxLength: length,
       );
       // Act
-      final Object result = _act(invalidString, length);
+      final result = _act(invalidString, length);
       // Assert
       expect(result, valueFailure);
     },

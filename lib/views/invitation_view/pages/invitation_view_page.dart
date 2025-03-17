@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
-import '../../home/widgets/invitations_app_bar.dart';
+import 'package:invitations_project/views/home/widgets/invitations_app_bar.dart';
 
 @RoutePage()
 class InvitationViewPage extends StatelessWidget {
@@ -13,12 +13,10 @@ class InvitationViewPage extends StatelessWidget {
   final String id;
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  Widget build(BuildContext context) => const Scaffold(
       appBar: InvitationsAppBar(),
       body: Center(
-        child: Text("INVITATION VIEW"),
+        child: Text('INVITATION VIEW'),
       ),
     );
-  }
 }

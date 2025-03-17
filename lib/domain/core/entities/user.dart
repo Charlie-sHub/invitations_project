@@ -21,29 +21,31 @@ class User with _$User {
 
   factory User.empty() => User(
         id: UniqueId(),
-        email: EmailAddress(""),
+        email: EmailAddress(''),
         invitationsIds: {},
         lastLogin: PastDate(DateTime.now()),
         creationDate: PastDate(DateTime.now()),
       );
 
-  Option<ValueFailure<dynamic>> get failureOption {
-    // Why is the id not checked?
-    return email.failureOrUnit
-        .andThen(lastLogin.failureOrUnit)
-        .andThen(creationDate.failureOrUnit)
-        .fold(
-          (failure) => some(failure),
-          (_) => none(),
-        );
-  }
+  Option<ValueFailure<dynamic>> get failureOption => Either.map3(
+        email.failureOrUnit,
+        lastLogin.failureOrUnit,
+        creationDate.failureOrUnit,
+        (
+          _,
+          __,
+          ___,
+        ) =>
+            unit,
+      ).fold(
+        some,
+        (_) => none(),
+      );
 
-  Either<ValueFailure<dynamic>, Unit> get failureOrUnit {
-    return failureOption.fold(
-      () => right(unit),
-      (failure) => left(failure),
-    );
-  }
+  Either<ValueFailure<dynamic>, Unit> get failureOrUnit => failureOption.fold(
+        () => right(unit),
+        left,
+      );
 
   bool get isValid => failureOption.isNone();
 }

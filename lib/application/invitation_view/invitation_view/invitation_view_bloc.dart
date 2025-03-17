@@ -15,14 +15,13 @@ part 'invitation_view_bloc.freezed.dart';
 @injectable
 class InvitationViewBloc
     extends Bloc<InvitationViewEvent, InvitationViewState> {
-  final InvitationViewRepositoryInterface _repository;
 
   InvitationViewBloc(this._repository)
       : super(const InvitationViewState.initial()) {
     on<InvitationViewEvent>(
       (event, emit) => event.when(
         loadedInvitation: (id) async {
-          emit(InvitationViewState.actionInProgress());
+          emit(const InvitationViewState.actionInProgress());
           final uniqueId = UniqueId.fromUniqueString(id);
           uniqueId.value.fold(
             (failure) => emit(
@@ -33,9 +32,8 @@ class InvitationViewBloc
             (_) => _repository.loadInvitation(uniqueId).then(
                   (failureOrUnit) => emit(
                     failureOrUnit.fold(
-                      (failure) => InvitationViewState.loadFailure(failure),
-                      (invitation) =>
-                          InvitationViewState.loadSuccess(invitation),
+                      InvitationViewState.loadFailure,
+                      InvitationViewState.loadSuccess,
                     ),
                   ),
                 ),
@@ -63,4 +61,5 @@ class InvitationViewBloc
       ),
     );
   }
+  final InvitationViewRepositoryInterface _repository;
 }

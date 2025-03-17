@@ -7,11 +7,6 @@ import 'package:invitations_project/domain/core/validation/validators/validate_s
 import 'package:invitations_project/domain/core/validation/validators/validate_string_not_empty.dart';
 
 class Password extends ValueObject<String> {
-  @override
-  final Either<ValueFailure<String>, String> value;
-
-  // Just chose a number that seemed sensible in the moment, nothing especial
-  static const maxLength = 40;
 
   factory Password(String input) => Password._(
         validateStringLength(
@@ -24,6 +19,11 @@ class Password extends ValueObject<String> {
       );
 
   const Password._(this.value);
+  @override
+  final Either<ValueFailure<String>, String> value;
+
+  // Just chose a number that seemed sensible in the moment, nothing especial
+  static const maxLength = 40;
 
   @override
   List<Either> get props => [value];

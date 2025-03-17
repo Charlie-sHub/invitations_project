@@ -15,13 +15,13 @@ import 'package:logger/logger.dart';
 )
 class ProductionInvitationViewRepository
     implements InvitationViewRepositoryInterface {
-  final Logger _logger;
-  final FirebaseFirestore _firestore;
 
   ProductionInvitationViewRepository(
     this._logger,
     this._firestore,
   );
+  final Logger _logger;
+  final FirebaseFirestore _firestore;
 
   @override
   Future<Either<Failure, Invitation>> loadInvitation(UniqueId id) async {
@@ -32,31 +32,31 @@ class ProductionInvitationViewRepository
         return right(snapshot.data()!.toDomain());
       } else {
         return left(
-          Failure.data(
+          const Failure.data(
             DataFailure.notFoundError(),
           ),
         );
       }
-    } catch (error) {
+    } on Exception catch (error) {
       return _onError(error);
     }
   }
 
   Either<Failure, T> _onError<T>(dynamic error) {
     if (error is FirebaseException) {
-      _logger.e("FirebaseException: ${error.message}");
+      _logger.e('FirebaseException: ${error.message}');
       return left(
         Failure.data(
           DataFailure.serverError(
-            errorString: "Firebase error: ${error.message}",
+            errorString: 'Firebase error: ${error.message}',
           ),
         ),
       );
     } else {
-      _logger.e("Unknown Exception: ${error.runtimeType}");
+      _logger.e('Unknown Exception: ${error.runtimeType}');
       return left(
         const Failure.data(
-          DataFailure.serverError(errorString: "Unknown server error"),
+          DataFailure.serverError(errorString: 'Unknown server error'),
         ),
       );
     }

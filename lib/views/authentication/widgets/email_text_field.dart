@@ -9,24 +9,22 @@ class EmailTextField extends StatelessWidget {
     super.key,
   });
 
-  final Function eventToAdd;
+  final void Function(String) eventToAdd;
   final Validator<String?> validator;
   final String? initialValue;
 
   @override
-  Widget build(BuildContext context) {
-    return TextFormField(
+  Widget build(BuildContext context) => TextFormField(
       onChanged: (value) => eventToAdd(value.trim()),
       initialValue: initialValue,
       validator: validator,
       autocorrect: false,
-      decoration: InputDecoration(
-        labelText: "Correo electronico",
-        prefixIcon: const Icon(
+      decoration: const InputDecoration(
+        labelText: 'Correo electronico',
+        prefixIcon: Icon(
           Icons.email,
         ),
         filled: true,
       ),
     );
-  }
 }

@@ -7,7 +7,8 @@ import 'package:invitations_project/domain/core/validation/objects/unique_id.dar
 abstract class CartRepositoryInterface {
   /// Requests a payment
   // This might require a collection of the items to be purchased,
-  // but in the meanwhile we're assuming only one Invitation at a time can be purchased
+  // but in the meanwhile we're assuming only one Invitation
+  // at a time can be purchased
   Future<Either<Failure, Unit>> purchase();
 
   /// Saves an Invitation, whether new or an edited old one

@@ -10,20 +10,18 @@ class SimpleInvitationCard extends StatelessWidget {
   final Invitation invitation;
 
   @override
-  Widget build(BuildContext context) {
-    return Card(
+  Widget build(BuildContext context) => Card(
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(invitation.title.getOrCrash()),
             const SizedBox(height: 10),
-            Text("ID: ${invitation.id.getOrCrash()}"),
+            Text('ID: ${invitation.id.getOrCrash()}'),
             const Text('Precio: €XX.XX'),
           ],
         ),
       ),
     );
-  }
 }

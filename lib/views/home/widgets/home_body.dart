@@ -4,19 +4,18 @@ import 'package:invitations_project/application/home/examples_loader/examples_lo
 import 'package:invitations_project/injection.dart';
 import 'package:invitations_project/views/core/widgets/invitations_progress_indicator.dart';
 
-import 'examples_grid.dart';
+import 'package:invitations_project/views/home/widgets/examples_grid.dart';
 
 class HomeBody extends StatelessWidget {
   const HomeBody({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return BlocProvider(
+  Widget build(BuildContext context) => BlocProvider(
       create: (context) => getIt<ExamplesLoaderBloc>()
-        ..add(ExamplesLoaderEvent.loadedExamples()),
+        ..add(const ExamplesLoaderEvent.loadedExamples()),
       child: BlocBuilder<ExamplesLoaderBloc, ExamplesLoaderState>(
         builder: (context, state) => state.when(
-          actionInProgress: () => InvitationsProgressIndicator(),
+          actionInProgress: InvitationsProgressIndicator.new,
           loadSuccess: (invitations) => ExamplesGrid(
             invitations: invitations,
           ),
@@ -26,5 +25,4 @@ class HomeBody extends StatelessWidget {
         ),
       ),
     );
-  }
 }

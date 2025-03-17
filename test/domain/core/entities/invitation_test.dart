@@ -8,9 +8,10 @@ import '../../../test_descriptions.dart';
 
 void main() {
   final validInvitation = getValidInvitation();
-  final invalidTitleInvitation = validInvitation.copyWith(title: Title(""));
+  final invalidTitleInvitation = validInvitation.copyWith(title: Title(''));
   final invalidEventDateInvitation = validInvitation.copyWith(
-      eventDate: FutureDate(DateTime.now().subtract(const Duration(days: 10))));
+    eventDate: FutureDate(DateTime.now().subtract(const Duration(days: 10))),
+  );
   final invalidLastModificationDateInvitation = validInvitation.copyWith(
     creationDate: PastDate(DateTime.now().add(const Duration(days: 10))),
   );
@@ -28,28 +29,28 @@ void main() {
     TestDescription.groupOnFailure,
     () {
       test(
-        "${TestDescription.invalid} with invalidTitleInvitation",
+        '${TestDescription.invalid} with invalidTitleInvitation',
         () async {
           // Assert
           expect(invalidTitleInvitation.isValid, false);
         },
       );
       test(
-        "${TestDescription.invalid} with invalidEventDateInvitation",
+        '${TestDescription.invalid} with invalidEventDateInvitation',
         () async {
           // Assert
           expect(invalidEventDateInvitation.isValid, false);
         },
       );
       test(
-        "${TestDescription.invalid} with invalidLastModificationDateInvitation",
+        '${TestDescription.invalid} with invalidLastModificationDateInvitation',
         () async {
           // Assert
           expect(invalidLastModificationDateInvitation.isValid, false);
         },
       );
       test(
-        "${TestDescription.invalid} with invalidCreationDateInvitation",
+        '${TestDescription.invalid} with invalidCreationDateInvitation',
         () async {
           // Assert
           expect(invalidCreationDateInvitation.isValid, false);

@@ -11,17 +11,17 @@ import 'package:invitations_project/domain/core/validation/objects/unique_id.dar
 )
 class DevelopmentCartRepository implements CartRepositoryInterface {
   @override
-  Future<Either<Failure, Unit>> purchase() async {
-    return right(unit);
-  }
+  Future<Either<Failure, Unit>> purchase() async => right(unit);
 
   @override
-  Future<Either<Failure, Unit>> deleteInvitation(UniqueId id) async {
-    return right(unit);
-  }
+  Future<Either<Failure, Unit>> deleteInvitation(
+    UniqueId id,
+  ) async =>
+      right(unit);
 
   @override
-  Future<Either<Failure, Unit>> saveInvitation(Invitation invitation) async {
-    return right(unit);
-  }
+  Future<Either<Failure, Unit>> saveInvitation(
+    Invitation invitation,
+  ) async =>
+      right(unit);
 }

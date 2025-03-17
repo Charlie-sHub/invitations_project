@@ -11,6 +11,9 @@ part 'user_dto.g.dart';
 
 @freezed
 class UserDto with _$UserDto {
+
+  factory UserDto.fromJson(Map<String, dynamic> json) =>
+      _$UserDtoFromJson(json);
   const UserDto._();
 
   const factory UserDto({
@@ -35,12 +38,9 @@ class UserDto with _$UserDto {
         id: UniqueId.fromUniqueString(id),
         email: EmailAddress(email),
         invitationsIds: invitationsIds
-            .map((stringId) => UniqueId.fromUniqueString(stringId))
+            .map(UniqueId.fromUniqueString)
             .toSet(),
         lastLogin: PastDate(lastLogin),
         creationDate: PastDate(creationDate),
       );
-
-  factory UserDto.fromJson(Map<String, dynamic> json) =>
-      _$UserDtoFromJson(json);
 }

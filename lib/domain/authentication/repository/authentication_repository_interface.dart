@@ -12,13 +12,15 @@ abstract class AuthenticationRepositoryInterface {
     required Password password,
   });
 
-  /// Sends a [User] object with only username and password to login in the server.
+  /// Sends a [User] object with only username and password
+  /// to login in the server.
   Future<Either<Failure, Unit>> logIn({
     required EmailAddress email,
     required Password password,
   });
 
-  /// Sends a request to the server to reset the password associated with the given [EmailAddress]
+  /// Sends a request to the server
+  /// to reset the password associated with the given [EmailAddress]
   Future<Either<Failure, Unit>> resetPassword(EmailAddress emailAddress);
 
   /// Calls the Google sign in API to log in or register.

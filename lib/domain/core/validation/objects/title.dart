@@ -6,10 +6,6 @@ import 'package:invitations_project/domain/core/validation/validators/validate_s
 import 'package:invitations_project/domain/core/validation/validators/validate_string_not_empty.dart';
 
 class Title extends ValueObject<String> {
-  static const maxLength = 50;
-
-  @override
-  final Either<ValueFailure<String>, String> value;
 
   factory Title(String input) => Title._(
         validateStringLength(
@@ -19,6 +15,10 @@ class Title extends ValueObject<String> {
       );
 
   const Title._(this.value);
+  static const maxLength = 50;
+
+  @override
+  final Either<ValueFailure<String>, String> value;
 
   @override
   List<Either> get props => [value];

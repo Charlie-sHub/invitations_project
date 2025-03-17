@@ -8,11 +8,9 @@ class SignInPage extends StatelessWidget {
   const SignInPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  Widget build(BuildContext context) => const Scaffold(
       body: Center(
-        child: Text("LOGIN"),
+        child: Text('LOGIN'),
       ),
     );
-  }
 }

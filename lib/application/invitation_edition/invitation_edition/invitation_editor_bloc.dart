@@ -21,7 +21,6 @@ part 'invitation_editor_bloc.freezed.dart';
 @injectable
 class InvitationEditorBloc
     extends HydratedBloc<InvitationEditorEvent, InvitationEditorState> {
-  final Logger _logger;
 
   InvitationEditorBloc(this._logger) : super(InvitationEditorState.initial()) {
     on<InvitationEditorEvent>(
@@ -74,6 +73,7 @@ class InvitationEditorBloc
       ),
     );
   }
+  final Logger _logger;
 
   @override
   InvitationEditorState? fromJson(Map<String, dynamic> json) {
@@ -88,7 +88,7 @@ class InvitationEditorBloc
         failureOrSuccessOption:
             none(), // We don't persist failures or successes
       );
-    } catch (error) {
+    } on Exception catch (error) {
       _logger.e('Could not restore InvitationEditorState from JSON: $error');
       return InvitationEditorState.initial();
     }

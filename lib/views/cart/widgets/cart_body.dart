@@ -13,63 +13,61 @@ class CartBody extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return BlocConsumer<CartBloc, CartState>(
-      listenWhen: (_, current) => current.failureOrSuccessOption.isSome(),
-      listener: _cartListener,
-      buildWhen: (previous, current) {
+  Widget build(BuildContext context) => BlocConsumer<CartBloc, CartState>(
+        listenWhen: (_, current) => current.failureOrSuccessOption.isSome(),
+        listener: _cartListener,
         // TODO: Implement buildWhen
         // Build should only be called when the state would change the UI
-        return true;
-      },
-      builder: (context, state) => Center(
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            children: [
-              const Text('Tu carrito'),
-              const SizedBox(height: 30),
-
-              state.invitationOption.fold(
-                () => Text("Tu carrito esta vacio"),
-                (invitation) => Column(
-                  children: [
-                    SimpleInvitationCard(
-                      invitation: invitation,
-                    ),
-                    const SizedBox(height: 50),
-                    TextButton(
-                      onPressed: () async {
-                        // TODO: Check authentication
-                        // User should be authenticated for the Stripe Firebase plugin to work
-                        // So before moving on to the purchase itself we need to make an authentication request
-                        // I the user is not authenticated then we display the authentication pop-up
-                        context.read<CartBloc>().add(
-                              CartEvent.purchased(),
-                            );
-                      },
-                      child: Text("Compra"),
-                    ),
-                  ],
+        buildWhen: (previous, current) => true,
+        builder: (context, state) => Center(
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              children: [
+                const Text('Tu carrito'),
+                const SizedBox(height: 30),
+                state.invitationOption.fold(
+                  () => const Text('Tu carrito esta vacio'),
+                  (invitation) => Column(
+                    children: [
+                      SimpleInvitationCard(
+                        invitation: invitation,
+                      ),
+                      const SizedBox(height: 50),
+                      TextButton(
+                        onPressed: () async {
+                          // TODO: Check authentication
+                          // User should be authenticated for the Stripe
+                          // Firebase plugin to work
+                          // So before moving on to the purchase itself
+                          // we need to make an authentication request
+                          // I the user is not authenticated then we display
+                          // the authentication pop-up
+                          context.read<CartBloc>().add(
+                                const CartEvent.purchased(),
+                              );
+                        },
+                        child: const Text('Compra'),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
-      ),
-    );
-  }
+      );
 
   void _cartListener(BuildContext context, CartState state) {
     state.failureOrSuccessOption.fold(
       () {},
       (either) => either.fold(
         (failure) => getIt<Logger>().e(
-          "Error purchasing Invitation: $failure",
+          'Error purchasing Invitation: $failure',
         ),
         (_) => state.invitationOption.fold(
           () => getIt<Logger>().e(
-            "Error purchasing Invitation: Purchased with empty Cart",
+            'Error purchasing Invitation: Purchased with empty Cart',
           ),
           (invitation) {
             ScaffoldMessenger.of(context).showSnackBar(
@@ -77,7 +75,7 @@ class CartBody extends StatelessWidget {
                 content: Text('Payment successful!'),
               ),
             );
-            context.read<CartBloc>().add(CartEvent.emptied());
+            context.read<CartBloc>().add(const CartEvent.emptied());
             context.router.push(
               InvitationViewRoute(id: invitation.id.getOrCrash()),
             );

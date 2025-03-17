@@ -15,8 +15,8 @@ void main() {
   late MockHomeRepositoryInterface mockRepository;
   late ExamplesLoaderBloc exampleLoaderBloc;
 
-  final failure = Failure.data(
-    DataFailure.serverError(errorString: "error"),
+  const failure = Failure.data(
+    DataFailure.serverError(errorString: 'error'),
   );
 
   final invitations = [getValidInvitation()];
@@ -29,7 +29,8 @@ void main() {
   );
 
   blocTest<ExamplesLoaderBloc, ExamplesLoaderState>(
-    'emits [actionInProgress, loadSuccess] when LoadedExamples is added and repository returns Right',
+    'emits [actionInProgress, loadSuccess] when LoadedExamples is '
+    'added and repository returns Right',
     build: () {
       when(mockRepository.getExampleInvitations()).thenAnswer(
         (_) async => right(invitations),
@@ -45,7 +46,8 @@ void main() {
   );
 
   blocTest<ExamplesLoaderBloc, ExamplesLoaderState>(
-    'emits [actionInProgress, loadFailure] when LoadedExamples is added and repository returns Left',
+    'emits [actionInProgress, loadFailure] when LoadedExamples is '
+    'added and repository returns Left',
     build: () {
       when(mockRepository.getExampleInvitations()).thenAnswer(
         (_) async => left(failure),
@@ -56,7 +58,7 @@ void main() {
     verify: (_) => mockRepository.getExampleInvitations(),
     expect: () => [
       const ExamplesLoaderState.actionInProgress(),
-      ExamplesLoaderState.loadFailure(failure),
+      const ExamplesLoaderState.loadFailure(failure),
     ],
   );
 }

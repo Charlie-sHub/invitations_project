@@ -11,9 +11,10 @@ import 'package:invitations_project/domain/cart/repository/cart_repository_inter
 import 'package:logger/logger.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart' as mocktail;
+
 import '../../core/mocks/mock_storage.dart';
 import 'cart_bloc_test.mocks.dart';
-import 'package:mocktail/mocktail.dart' as mocktail;
 
 @GenerateNiceMocks([
   MockSpec<CartRepositoryInterface>(),
@@ -25,8 +26,8 @@ void main() {
   late CartBloc cartBloc;
   late Storage storage;
 
-  final failure = Failure.data(
-    DataFailure.serverError(errorString: "error"),
+  const failure = Failure.data(
+    DataFailure.serverError(errorString: 'error'),
   );
 
   final invitation = getValidInvitation();
@@ -68,7 +69,7 @@ void main() {
   blocTest<CartBloc, CartState>(
     'emits [state] without any invitation when Emptied is added',
     build: () => cartBloc..add(CartEvent.addedInvitation(invitation)),
-    act: (bloc) => bloc.add(CartEvent.emptied()),
+    act: (bloc) => bloc.add(const CartEvent.emptied()),
     skip: 1,
     expect: () => [
       CartState.initial(),
@@ -83,14 +84,15 @@ void main() {
       CartState.initial().copyWith(
         showErrorMessages: true,
         failureOrSuccessOption: some(
-          left(Failure.application(ApplicationFailure.emptyCart())),
+          left(const Failure.application(ApplicationFailure.emptyCart())),
         ),
       ),
     ],
   );
 
   blocTest<CartBloc, CartState>(
-    'emits [state, state] when Purchased is added and repository returns Right on purchase and save',
+    'emits [state, state] when Purchased is added and repository '
+    'returns Right on purchase and save',
     build: () {
       when(mockRepository.saveInvitation(invitation)).thenAnswer(
         (_) async => right(unit),
@@ -122,7 +124,8 @@ void main() {
   );
 
   blocTest<CartBloc, CartState>(
-    'emits [state, state] when Purchased is added and repository returns Right on saveInvitation but Left on purchase',
+    'emits [state, state] when Purchased is added and repository '
+    'returns Right on saveInvitation but Left on purchase',
     build: () {
       when(mockRepository.saveInvitation(invitation)).thenAnswer(
         (_) async => left(failure),
@@ -151,7 +154,8 @@ void main() {
   );
 
   blocTest<CartBloc, CartState>(
-    'emits [state, state] when Purchased is added and repository returns Left on saveInvitation',
+    'emits [state, state] when Purchased is added and repository '
+    'returns Left on saveInvitation',
     build: () {
       when(mockRepository.saveInvitation(invitation)).thenAnswer(
         (_) async => left(failure),
@@ -180,7 +184,8 @@ void main() {
   );
 
   blocTest<CartBloc, CartState>(
-    'emits [state, state] when Purchased is added and repository returns Right on saveInvitation but Left on purchase',
+    'emits [state, state] when Purchased is added and repository '
+    'returns Right on saveInvitation but Left on purchase',
     build: () {
       when(mockRepository.saveInvitation(invitation)).thenAnswer(
         (_) async => right(unit),

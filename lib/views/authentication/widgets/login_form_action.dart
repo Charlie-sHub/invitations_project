@@ -14,15 +14,13 @@ class LoginFormAction extends StatelessWidget {
   final LogInFormEvent event;
 
   @override
-  Widget build(BuildContext context) {
-    return TextButton(
+  Widget build(BuildContext context) => TextButton(
       onPressed: () {
         context.read<LogInFormBloc>().add(event);
         context.read<AuthenticationBloc>().add(
-              AuthenticationEvent.authenticationCheckRequested(),
+              const AuthenticationEvent.authenticationCheckRequested(),
             );
       },
       child: Text(text),
     );
-  }
 }

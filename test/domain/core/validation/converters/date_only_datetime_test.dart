@@ -4,7 +4,7 @@ import 'package:invitations_project/domain/core/validation/converters/date_only_
 
 void main() {
   test(
-    "Should make all the units of time of less than a day equal 0",
+    'Should make all the units of time of less than a day equal 0',
         () async {
       // Act
       final either = dateOnlyDateTime(DateTime.now());

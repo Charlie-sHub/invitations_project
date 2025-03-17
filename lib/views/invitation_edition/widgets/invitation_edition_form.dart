@@ -9,42 +9,41 @@ class InvitationEditionForm extends StatelessWidget {
   const InvitationEditionForm({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return BlocConsumer<InvitationEditorBloc, InvitationEditorState>(
-      listenWhen: (_, current) => current.hasSubmitted,
-      listener: _invitationEditionListener,
-      buildWhen: (previous, current) {
+  Widget build(BuildContext context) =>
+      BlocConsumer<InvitationEditorBloc, InvitationEditorState>(
+        listenWhen: (_, current) => current.hasSubmitted,
+        listener: _invitationEditionListener,
         // TODO: Implement buildWhen
         // Build should only be called when the state would change the UI
-        return true;
-      },
-      builder: (context, state) => Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(state.invitation.title.getOrCrash()),
-            TextButton(
-              onPressed: () => context.read<InvitationEditorBloc>().add(
-                    InvitationEditorEvent.submitted(),
-                  ),
-              child: Text("Hecho"),
-            ),
-          ],
+        buildWhen: (previous, current) => true,
+        builder: (context, state) => Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(state.invitation.title.getOrCrash()),
+              TextButton(
+                onPressed: () => context.read<InvitationEditorBloc>().add(
+                      const InvitationEditorEvent.submitted(),
+                    ),
+                child: const Text('Hecho'),
+              ),
+            ],
+          ),
         ),
-      ),
-    );
-  }
+      );
 
   void _invitationEditionListener(
-      BuildContext context, InvitationEditorState state) {
+    BuildContext context,
+    InvitationEditorState state,
+  ) {
     if (state.hasSubmitted) {
       context.read<InvitationEditorBloc>().add(
-            InvitationEditorEvent.unSubmitted(),
+            const InvitationEditorEvent.unSubmitted(),
           );
       context.read<CartBloc>().add(
             CartEvent.addedInvitation(state.invitation),
           );
-      context.router.push(CartRoute());
+      context.router.push(const CartRoute());
     }
   }
 }

@@ -1,8 +1,10 @@
 import 'package:dartz/dartz.dart';
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth_mocks/firebase_auth_mocks.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:google_sign_in_mocks/google_sign_in_mocks.dart';
 import 'package:invitations_project/core/error/failure.dart';
 import 'package:invitations_project/data/authentication/production_authentication_repository.dart';
 import 'package:invitations_project/data/core/failures/data_failure.dart';
@@ -14,10 +16,8 @@ import 'package:invitations_project/injection.dart';
 import 'package:logger/logger.dart';
 import 'package:mock_exceptions/mock_exceptions.dart';
 import 'package:mockito/annotations.dart';
-import 'package:firebase_auth_mocks/firebase_auth_mocks.dart';
-import 'package:google_sign_in_mocks/google_sign_in_mocks.dart';
-import '../../test_descriptions.dart';
 
+import '../../test_descriptions.dart';
 import 'production_authentication_repository_test.mocks.dart';
 
 @GenerateNiceMocks([MockSpec<Logger>()])
@@ -30,22 +30,21 @@ void main() {
 
   final user = getValidUser();
   final userDto = UserDto.fromDomain(user);
-  final password = Password("TESTING1234");
+  final password = Password('TESTING1234');
   final email = user.email;
   final mockUser = MockUser(
-    isAnonymous: false,
     uid: user.id.getOrCrash(),
     email: email.getOrCrash(),
     displayName: 'Bob',
   );
 
-  final platformException = PlatformException(code: "");
+  final platformException = PlatformException(code: '');
   final serverFailure = Failure.data(
     DataFailure.serverError(
       errorString: platformException.toString(),
     ),
   );
-  final authException = FirebaseAuthException(code: "SOME_ERROR");
+  final authException = FirebaseAuthException(code: 'SOME_ERROR');
   final genericFirebaseFailure = Failure.data(
     DataFailure.serverError(
       errorString: authException.toString(),
@@ -90,6 +89,7 @@ void main() {
           expect(result.isRight(), true);
         },
       );
+
       test(
         'should log in a user successfully',
         () async {
@@ -103,6 +103,7 @@ void main() {
           expect(result.isRight(), true);
         },
       );
+
       test(
         'should log in with Google successfully if not registered',
         () async {
@@ -113,11 +114,12 @@ void main() {
           expect(result.isRight(), true);
         },
       );
+
       test(
         'should log in with Google successfully if registered',
         () async {
           // Arrange
-          fakeFirebaseFirestore.collection("users").add(userDto.toJson());
+          await fakeFirebaseFirestore.collection('users').add(userDto.toJson());
 
           // Act
           final result = await repository.logInGoogle();
@@ -126,6 +128,7 @@ void main() {
           expect(result.isRight(), true);
         },
       );
+
       test(
         'should reset password successfully',
         () async {
@@ -136,15 +139,16 @@ void main() {
           expect(result.isRight(), true);
         },
       );
+
       test(
         'should delete user successfully',
         () async {
           // Arrange
-          mockFirebaseAuth.signInWithEmailAndPassword(
+          await mockFirebaseAuth.signInWithEmailAndPassword(
             email: email.getOrCrash(),
             password: password.getOrCrash(),
           );
-          fakeFirebaseFirestore.collection("users").doc(userDto.id).set(
+          await fakeFirebaseFirestore.collection('users').doc(userDto.id).set(
                 userDto.toJson(),
               );
 
@@ -155,15 +159,16 @@ void main() {
           expect(result.isRight(), true);
         },
       );
+
       test(
         'should get logged in user successfully',
         () async {
           // Arrange
-          mockFirebaseAuth.signInWithEmailAndPassword(
+          await mockFirebaseAuth.signInWithEmailAndPassword(
             email: email.getOrCrash(),
             password: password.getOrCrash(),
           );
-          fakeFirebaseFirestore.collection("users").doc(userDto.id).set(
+          await fakeFirebaseFirestore.collection('users').doc(userDto.id).set(
                 userDto.toJson(),
               );
 
@@ -174,13 +179,15 @@ void main() {
           expect(result, some(user));
         },
       );
+
       test(
         'should log out successfully',
         skip: true,
         () async {
           // Act
           // Getting this error:
-          // Class 'MockGoogleSignIn' has no instance method 'signOut' with matching arguments.
+          // Class 'MockGoogleSignIn' has no instance method 'signOut'
+          // with matching arguments.
           // The mock class has no signOut yet and all logOut does is call it
           // Safe to assume logOut works
           await repository.logOut();
@@ -209,6 +216,7 @@ void main() {
           expect(result, left(unAuthenticatedFailure));
         },
       );
+
       test(
         'should return unAuthenticatedFailure when currentUser is null',
         () async {
@@ -219,8 +227,10 @@ void main() {
           expect(result, none());
         },
       );
+
       test(
-        'should return InvalidCredentialsFailure when FirebaseAuthException with wrong-password is thrown',
+        'should return InvalidCredentialsFailure when '
+            'FirebaseAuthException with wrong-password is thrown',
         () async {
           // Arrange
           const invalidFailure = Failure.data(
@@ -245,8 +255,10 @@ void main() {
           expect(result, left(invalidFailure));
         },
       );
+
       test(
-        'should return UnregisteredFailure when FirebaseAuthException with user-not-found is thrown',
+        'should return UnregisteredFailure when '
+            'FirebaseAuthException with user-not-found is thrown',
         () async {
           // Arrange
           const unregisteredFailure = Failure.data(
@@ -271,8 +283,10 @@ void main() {
           expect(result, left(unregisteredFailure));
         },
       );
+
       test(
-        'should return ServerFailure when FirebaseAuthException with SOME_ERROR is thrown',
+        'should return ServerFailure when FirebaseAuthException '
+            'with SOME_ERROR is thrown',
         () async {
           // Arrange
           whenCalling(
@@ -292,6 +306,7 @@ void main() {
           expect(result, left(genericFirebaseFailure));
         },
       );
+
       test(
         'should return ServerFailure when PlatformException is thrown',
         () async {
@@ -313,6 +328,7 @@ void main() {
           expect(result, left(serverFailure));
         },
       );
+
       test(
         'should return CancelledByUserFailure when Google Sign-In is cancelled',
         () async {
@@ -329,6 +345,7 @@ void main() {
           expect(result, left(cancelledFailure));
         },
       );
+
       test(
         'should return ServerErrorFailure when PlatformException is thrown',
         () async {
@@ -347,8 +364,10 @@ void main() {
           expect(result, left(serverFailure));
         },
       );
+
       test(
-        'should return GenericFirebaseFailure when a generic FirebaseAuthException is thrown',
+        'should return GenericFirebaseFailure when a generic '
+            'FirebaseAuthException is thrown',
         () async {
           // Arrange
           whenCalling(
@@ -368,6 +387,7 @@ void main() {
           expect(result, left(genericFirebaseFailure));
         },
       );
+
       test(
         'should return ServerErrorFailure when a PlatformException is thrown',
         () async {
@@ -389,6 +409,7 @@ void main() {
           expect(result, left(serverFailure));
         },
       );
+
       test(
         'should return ServerErrorFailure when any exception is thrown',
         () async {

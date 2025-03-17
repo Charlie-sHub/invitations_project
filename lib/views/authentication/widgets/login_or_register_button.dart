@@ -7,27 +7,26 @@ class LoginOrRegisterButton extends StatelessWidget {
   const LoginOrRegisterButton({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<LogInFormBloc, LogInFormState>(
-      builder: (context, state) => state.failureOrSuccessOption.fold(
-        () => LoginFormAction(
-          event: LogInFormEvent.loggedIn(),
-          text: "Login",
-        ),
-        (either) => either.fold(
-          (failure) => failure.maybeWhen(
-            data: (dataFailure) => dataFailure.maybeWhen(
-              unregisteredUser: () => LoginFormAction(
-                event: LogInFormEvent.registered(),
-                text: "Registrate",
-              ),
-              orElse: () => SizedBox(),
-            ),
-            orElse: () => SizedBox(),
+  Widget build(BuildContext context) =>
+      BlocBuilder<LogInFormBloc, LogInFormState>(
+        builder: (context, state) => state.failureOrSuccessOption.fold(
+          () => const LoginFormAction(
+            event: LogInFormEvent.loggedIn(),
+            text: 'Login',
           ),
-          (_) => SizedBox(),
+          (either) => either.fold(
+            (failure) => failure.maybeWhen(
+              data: (dataFailure) => dataFailure.maybeWhen(
+                unregisteredUser: () => const LoginFormAction(
+                  event: LogInFormEvent.registered(),
+                  text: 'Registrate',
+                ),
+                orElse: SizedBox.new,
+              ),
+              orElse: SizedBox.new,
+            ),
+            (_) => const SizedBox(),
+          ),
         ),
-      ),
-    );
-  }
+      );
 }

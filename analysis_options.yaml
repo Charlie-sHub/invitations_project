@@ -52,6 +52,8 @@ analyzer:
     strict_raw_type: ignore
     one_member_abstracts: ignore
     flutter_style_todos: ignore
+    public_member_api_docs: ignore
+    avoid_catching_errors: ignore
 
 coverage:
   ignore:

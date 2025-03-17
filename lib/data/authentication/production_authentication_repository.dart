@@ -22,17 +22,16 @@ import 'package:logger/logger.dart';
 )
 class ProductionAuthenticationRepository
     implements AuthenticationRepositoryInterface {
+
+  ProductionAuthenticationRepository(this._firebaseAuth,
+      this._googleSignIn,
+      this._firestore,
+      this._logger,);
+
   final Logger _logger;
   final FirebaseAuth _firebaseAuth;
   final GoogleSignIn _googleSignIn;
   final FirebaseFirestore _firestore;
-
-  ProductionAuthenticationRepository(
-    this._firebaseAuth,
-    this._googleSignIn,
-    this._firestore,
-    this._logger,
-  );
 
   @override
   Future<Either<Failure, Unit>> deleteUser() async {
@@ -46,10 +45,16 @@ class ProductionAuthenticationRepository
       }
       await _firebaseAuth.currentUser?.delete();
       return right(unit);
-    } catch (exception) {
+    } on Exception catch (exception) {
       return left(
         Failure.data(
           DataFailure.serverError(errorString: exception.toString()),
+        ),
+      );
+    } on Error catch (error) {
+      return left(
+        Failure.data(
+          DataFailure.serverError(errorString: error.toString()),
         ),
       );
     }
@@ -60,8 +65,8 @@ class ProductionAuthenticationRepository
     try {
       final user = await _firestore.currentUser();
       return some(user);
-    } catch (exception) {
-      _logger.w("User is not authenticated");
+    } on Error catch (_) {
+      _logger.w('User is not authenticated');
       return none();
     }
   }
@@ -78,20 +83,20 @@ class ProductionAuthenticationRepository
       );
       return right(unit);
     } on FirebaseAuthException catch (exception) {
-      if (exception.code == "wrong-password") {
+      if (exception.code == 'wrong-password') {
         return left(
           const Failure.data(
             DataFailure.invalidCredentials(),
           ),
         );
-      } else if (exception.code == "user-not-found") {
+      } else if (exception.code == 'user-not-found') {
         return left(
           const Failure.data(
             DataFailure.unregisteredUser(),
           ),
         );
       } else {
-        _logger.e("General Firebase Error: $exception");
+        _logger.e('General Firebase Error: $exception');
         return left(
           Failure.data(
             DataFailure.serverError(errorString: exception.toString()),
@@ -140,15 +145,16 @@ class ProductionAuthenticationRepository
               creationDate: PastDate(DateTime.now()),
             );
             await _firestore.userCollection.doc(user.id.getOrCrash()).set(
-                  UserDto.fromDomain(user),
-                );
+              UserDto.fromDomain(user),
+            );
           }
           return right(none());
         } else {
-          // In principle this should never happen as _firebaseAuth signs in immediately after google
+          // In principle this should never happen as _firebaseAuth
+          // signs in immediately after google
           return left(
             const Failure.data(
-              DataFailure.serverError(errorString: "Null Firebase user"),
+              DataFailure.serverError(errorString: 'Null Firebase user'),
             ),
           );
         }
@@ -176,7 +182,8 @@ class ProductionAuthenticationRepository
   }
 
   @override
-  Future<void> logOut() async => Future.wait(
+  Future<void> logOut() async =>
+      Future.wait(
         [
           _googleSignIn.signOut(),
           _firebaseAuth.signOut(),
@@ -203,20 +210,20 @@ class ProductionAuthenticationRepository
           creationDate: PastDate(DateTime.now()),
         );
         await _firestore.userCollection.doc(firebaseUser.uid).set(
-              UserDto.fromDomain(user),
-            );
+          UserDto.fromDomain(user),
+        );
         return right(unit);
       } else {
         // In principle this should never happen as _firebaseAuth would have
         // thrown an exception when calling createUserWithEmailAndPassword
         return left(
           const Failure.data(
-            DataFailure.serverError(errorString: "Null Firebase user"),
+            DataFailure.serverError(errorString: 'Null Firebase user'),
           ),
         );
       }
     } on FirebaseAuthException catch (exception) {
-      if (exception.code == "email-already-in-use") {
+      if (exception.code == 'email-already-in-use') {
         return left(
           Failure.data(
             DataFailure.emailAlreadyInUse(
@@ -249,7 +256,7 @@ class ProductionAuthenticationRepository
         email: emailAddress.getOrCrash(),
       );
       return right(unit);
-    } catch (exception) {
+    } on Exception catch (exception) {
       _logger.e(exception.toString());
       return left(
         Failure.data(

@@ -25,34 +25,36 @@ class Invitation with _$Invitation {
   }) = _Invitation;
 
   factory Invitation.empty() => Invitation(
-    id: UniqueId(),
-    creatorId: UniqueId(),
-    title: Title("title"),
-    type: InvitationType.example,
-    eventDate: FutureDate(DateTime.now().add(Duration(days: 7))),
-    creationDate: PastDate(DateTime.now()),
-    lastModificationDate: PastDate(DateTime.now()),
-  );
+        id: UniqueId(),
+        creatorId: UniqueId(),
+        title: Title('title'),
+        type: InvitationType.example,
+        eventDate: FutureDate(DateTime.now().add(const Duration(days: 7))),
+        creationDate: PastDate(DateTime.now()),
+        lastModificationDate: PastDate(DateTime.now()),
+      );
 
-  Option<ValueFailure<dynamic>> get failureOption {
-    return title.failureOrUnit
-        .andThen(eventDate.failureOrUnit)
-        .andThen(creationDate.failureOrUnit)
-        .andThen(lastModificationDate.failureOrUnit)
-        .fold(
-          (failure) => some(failure),
-          (_) => none(),
-        );
-  }
+  Option<ValueFailure<dynamic>> get failureOption => Either.map4(
+        title.failureOrUnit,
+        eventDate.failureOrUnit,
+        creationDate.failureOrUnit,
+        lastModificationDate.failureOrUnit,
+        (
+          _,
+          __,
+          ___,
+          ____,
+        ) =>
+            unit,
+      ).fold(
+        some,
+        (_) => none(),
+      );
 
-  Either<ValueFailure<dynamic>, Unit> get failureOrUnit {
-    return failureOption.fold(
-      () => right(unit),
-      (failure) => left(failure),
-    );
-  }
+  Either<ValueFailure<dynamic>, Unit> get failureOrUnit => failureOption.fold(
+        () => right(unit),
+        left,
+      );
 
   bool get isValid => failureOption.isNone();
-
-
 }

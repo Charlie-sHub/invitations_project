@@ -13,7 +13,8 @@ import 'package:invitations_project/domain/invitation_view/repository/invitation
 class DevelopmentInvitationViewRepository
     implements InvitationViewRepositoryInterface {
   @override
-  Future<Either<Failure, Invitation>> loadInvitation(UniqueId id) async {
-    return right(getValidInvitation());
-  }
+  Future<Either<Failure, Invitation>> loadInvitation(
+    UniqueId id,
+  ) async =>
+      right(getValidInvitation());
 }

@@ -12,8 +12,8 @@ class LogInFormState with _$LogInFormState {
   }) = _LogInFormState;
 
   factory LogInFormState.initial() => LogInFormState(
-        email: EmailAddress(""),
-        password: Password(""),
+        email: EmailAddress(''),
+        password: Password(''),
         showErrorMessages: false,
         isSubmitting: false,
         thirdPartyUserOption: none(),

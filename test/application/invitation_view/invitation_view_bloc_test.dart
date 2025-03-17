@@ -18,9 +18,9 @@ void main() {
 
   final invitation = getValidInvitation();
   final id = invitation.id.getOrCrash();
-  const emptyId = "";
-  final failure = Failure.data(
-    DataFailure.serverError(errorString: "error"),
+  const emptyId = '';
+  const failure = Failure.data(
+    DataFailure.serverError(errorString: 'error'),
   );
 
   setUp(
@@ -31,7 +31,8 @@ void main() {
   );
 
   blocTest<InvitationViewBloc, InvitationViewState>(
-    'emits [actionInProgress, loadSuccess] when LoadedInvitation is added and repository returns Right',
+    'emits [actionInProgress, loadSuccess] when LoadedInvitation '
+    'is added and repository returns Right',
     build: () {
       when(mockRepository.loadInvitation(any)).thenAnswer(
         (_) async => right(invitation),
@@ -47,7 +48,8 @@ void main() {
   );
 
   blocTest<InvitationViewBloc, InvitationViewState>(
-    'emits [actionInProgress, loadFailure] when LoadedInvitation is added and repository returns Left',
+    'emits [actionInProgress, loadFailure] when LoadedInvitation '
+    'is added and repository returns Left',
     build: () {
       when(mockRepository.loadInvitation(any)).thenAnswer(
         (_) async => left(failure),
@@ -58,23 +60,23 @@ void main() {
     verify: (_) => mockRepository.loadInvitation(invitation.id),
     expect: () => [
       const InvitationViewState.actionInProgress(),
-      InvitationViewState.loadFailure(failure),
+      const InvitationViewState.loadFailure(failure),
     ],
   );
 
   blocTest<InvitationViewBloc, InvitationViewState>(
-    'emits [actionInProgress, loadFailure] when LoadedInvitation is added and the id is a value failure',
+    'emits [actionInProgress, loadFailure] when LoadedInvitation '
+    'is added and the id is a value failure',
     build: () => invitationViewBloc,
-    act: (bloc) => bloc.add(InvitationViewEvent.loadedInvitation(emptyId)),
-    expect: () {
-      return [
-        const InvitationViewState.actionInProgress(),
-        InvitationViewState.loadFailure(
-          Failure.value(
-            ValueFailure<String>.emptyString(failedValue: emptyId),
-          ),
+    act: (bloc) =>
+        bloc.add(const InvitationViewEvent.loadedInvitation(emptyId)),
+    expect: () => [
+      const InvitationViewState.actionInProgress(),
+      const InvitationViewState.loadFailure(
+        Failure.value(
+          ValueFailure<String>.emptyString(failedValue: emptyId),
         ),
-      ];
-    },
+      ),
+    ],
   );
 }

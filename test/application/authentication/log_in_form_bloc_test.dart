@@ -21,8 +21,8 @@ void main() {
   const email = 'test@email.com';
   const password = 'abcd*1234';
   final validUser = getValidUser();
-  final failure = Failure.data(
-    DataFailure.serverError(errorString: "error"),
+  const failure = Failure.data(
+    DataFailure.serverError(errorString: 'error'),
   );
 
   setUp(
@@ -39,7 +39,7 @@ void main() {
         'emits a state with the changed email when EmailChanged is added',
         build: () => logInFormBloc,
         act: (bloc) => bloc.add(
-          LogInFormEvent.emailChanged(email),
+          const LogInFormEvent.emailChanged(email),
         ),
         expect: () => [
           LogInFormState.initial().copyWith(
@@ -53,7 +53,7 @@ void main() {
         'emits state with the changed password when PasswordChanged is added',
         build: () => logInFormBloc,
         act: (bloc) => bloc.add(
-          LogInFormEvent.passwordChanged(password),
+          const LogInFormEvent.passwordChanged(password),
         ),
         expect: () => [
           LogInFormState.initial().copyWith(
@@ -64,7 +64,9 @@ void main() {
       );
 
       blocTest<LogInFormBloc, LogInFormState>(
-        'emits [state, state] (first state is submitting and the latter is the result) when Registered is added and repository returns Right',
+        'emits [state, state] (first state is submitting and '
+        'the latter is the result) when Registered is added and '
+        'repository returns Right',
         build: () {
           when(
             mockRepository.register(
@@ -100,7 +102,9 @@ void main() {
       );
 
       blocTest<LogInFormBloc, LogInFormState>(
-        'emits [state, state] (first state is submitting and the latter is the result) when LoggedInApple is added and repository returns Right',
+        'emits [state, state] (first state is submitting and the '
+        'latter is the result) when LoggedInApple is added and repository '
+        'returns Right',
         build: () {
           when(mockRepository.logInGoogle()).thenAnswer(
             (_) async => right(some(validUser)),
@@ -124,7 +128,9 @@ void main() {
       );
 
       blocTest<LogInFormBloc, LogInFormState>(
-        'emits [state, state] (first state is submitting and the latter is the result) when LoggedInApple is added and repository returns Right',
+        'emits [state, state] (first state is submitting and the '
+        'latter is the result) when LoggedInApple is added and repository '
+        'returns Right',
         build: () {
           when(mockRepository.logInApple()).thenAnswer(
             (_) async => right(some(validUser)),
@@ -153,7 +159,9 @@ void main() {
     TestDescription.groupOnFailure,
     () {
       blocTest<LogInFormBloc, LogInFormState>(
-        'emits [state, state] (first state is submitting and the latter is the failure) when Registered is added and repository returns Left',
+        'emits [state, state] (first state is submitting and the '
+        'latter is the failure) when Registered is added and repository '
+        'returns Left',
         build: () {
           when(
             mockRepository.register(
@@ -172,26 +180,26 @@ void main() {
           email: EmailAddress(email),
           password: Password(password),
         ),
-        expect: () {
-          return [
-            logInFormBloc.state.copyWith(
-              isSubmitting: true,
-              showErrorMessages: false,
-              failureOrSuccessOption: none(),
+        expect: () => [
+          logInFormBloc.state.copyWith(
+            isSubmitting: true,
+            showErrorMessages: false,
+            failureOrSuccessOption: none(),
+          ),
+          logInFormBloc.state.copyWith(
+            isSubmitting: false,
+            showErrorMessages: true,
+            failureOrSuccessOption: some(
+              left(failure),
             ),
-            logInFormBloc.state.copyWith(
-              isSubmitting: false,
-              showErrorMessages: true,
-              failureOrSuccessOption: some(
-                left(failure),
-              ),
-            ),
-          ];
-        },
+          ),
+        ],
       );
 
       blocTest<LogInFormBloc, LogInFormState>(
-        'emits [state, state] (first state is submitting and the latter is the failure) when LoggedInGoogle is added and repository returns Left',
+        'emits [state, state] (first state is submitting and the '
+        'latter is the failure) when LoggedInGoogle is added and repository '
+        'returns Left',
         build: () {
           when(mockRepository.logInGoogle()).thenAnswer(
             (_) async => left(failure),
@@ -217,7 +225,9 @@ void main() {
       );
 
       blocTest<LogInFormBloc, LogInFormState>(
-        'emits [state, state] (first state is submitting and the latter is the failure) when LoggedInApple is added and repository returns Left',
+        'emits [state, state] (first state is submitting and the '
+        'latter is the failure) when LoggedInApple is added and repository '
+        'returns Left',
         build: () {
           when(mockRepository.logInApple()).thenAnswer(
             (_) async => left(failure),

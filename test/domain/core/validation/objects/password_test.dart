@@ -4,12 +4,13 @@ import 'package:invitations_project/domain/core/validation/objects/password.dart
 import '../../../../test_descriptions.dart';
 
 void main() {
-  const validPassword = "abcd*1234";
-  const emptyPassword = "";
-  const multiLinePassword = "abcd \n * \n 1234";
-  const tooShortPassword = "a";
-  const tooLongPassword =
-      "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+  const validPassword = 'abcd*1234';
+  const emptyPassword = '';
+  const multiLinePassword = 'abcd \n * \n 1234';
+  const tooShortPassword = 'a';
+  const tooLongPassword = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
+      'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
+      'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa';
   test(
     TestDescription.valid,
     () async {
@@ -24,7 +25,7 @@ void main() {
     TestDescription.groupOnFailure,
     () {
       test(
-        "${TestDescription.invalid} with tooShortPassword",
+        '${TestDescription.invalid} with tooShortPassword',
         () async {
           // Act
           final password = Password(tooShortPassword);
@@ -33,7 +34,7 @@ void main() {
         },
       );
       test(
-        "${TestDescription.invalid} with tooLongPassword",
+        '${TestDescription.invalid} with tooLongPassword',
         () async {
           // Act
           final password = Password(tooLongPassword);
@@ -42,7 +43,7 @@ void main() {
         },
       );
       test(
-        "${TestDescription.invalid} with emptyPassword",
+        '${TestDescription.invalid} with emptyPassword',
         () async {
           // Act
           final password = Password(emptyPassword);
@@ -51,7 +52,7 @@ void main() {
         },
       );
       test(
-        "${TestDescription.invalid} with multiLinePassword",
+        '${TestDescription.invalid} with multiLinePassword',
         () async {
           // Act
           final password = Password(multiLinePassword);

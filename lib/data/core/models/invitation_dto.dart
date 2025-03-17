@@ -13,6 +13,9 @@ part 'invitation_dto.g.dart';
 
 @freezed
 class InvitationDto with _$InvitationDto {
+
+  factory InvitationDto.fromJson(Map<String, dynamic> json) =>
+      _$InvitationDtoFromJson(json);
   const InvitationDto._();
 
   const factory InvitationDto({
@@ -44,7 +47,4 @@ class InvitationDto with _$InvitationDto {
         creationDate: PastDate(creationDate),
         lastModificationDate: PastDate(lastModificationDate),
       );
-
-  factory InvitationDto.fromJson(Map<String, dynamic> json) =>
-      _$InvitationDtoFromJson(json);
 }

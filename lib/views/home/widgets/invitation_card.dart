@@ -14,13 +14,12 @@ class InvitationCard extends StatelessWidget {
   final Invitation invitation;
 
   @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
+  Widget build(BuildContext context) => GestureDetector(
       onTap: () {
         context.read<InvitationEditorBloc>().add(
               InvitationEditorEvent.initialized(invitation),
             );
-        context.router.push(InvitationEditionRoute());
+        context.router.push(const InvitationEditionRoute());
       },
       child: Padding(
         padding: const EdgeInsets.all(40),
@@ -38,5 +37,4 @@ class InvitationCard extends StatelessWidget {
         ),
       ),
     );
-  }
 }

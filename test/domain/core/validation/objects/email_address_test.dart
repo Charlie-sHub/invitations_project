@@ -4,8 +4,8 @@ import 'package:invitations_project/domain/core/validation/objects/email_address
 import '../../../../test_descriptions.dart';
 
 void main() {
-  const invalidEmail = "test";
-  const validEmail = "test@test.com";
+  const invalidEmail = 'test';
+  const validEmail = 'test@test.com';
   test(
     TestDescription.valid,
     () async {

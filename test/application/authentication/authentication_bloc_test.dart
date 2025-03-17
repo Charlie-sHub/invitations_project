@@ -1,6 +1,6 @@
+import 'package:bloc_test/bloc_test.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:bloc_test/bloc_test.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:invitations_project/application/authentication/authentication/authentication_bloc.dart';
 import 'package:invitations_project/data/core/misc/get_valid_user.dart';
@@ -8,9 +8,10 @@ import 'package:invitations_project/domain/authentication/repository/authenticat
 import 'package:invitations_project/domain/core/entities/user.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart' as mocktail;
+
 import '../../core/mocks/mock_storage.dart';
 import 'authentication_bloc_test.mocks.dart';
-import 'package:mocktail/mocktail.dart' as mocktail;
 
 @GenerateNiceMocks([MockSpec<AuthenticationRepositoryInterface>()])
 void main() {
@@ -36,7 +37,8 @@ void main() {
   );
 
   blocTest<AuthenticationBloc, AuthenticationState>(
-    'emits [UnAuthenticated] when event AuthenticationCheckRequested is added and repository returns none',
+    'emits [UnAuthenticated] when event '
+    'AuthenticationCheckRequested is added and repository returns none',
     build: () {
       when(mockRepository.getLoggedInUser()).thenAnswer(
         (_) async => none<User>(),
@@ -51,7 +53,8 @@ void main() {
   );
 
   blocTest<AuthenticationBloc, AuthenticationState>(
-    'emits [Authenticated] when event AuthenticationCheckRequested is added and repository returns some',
+    'emits [Authenticated] when event '
+    'AuthenticationCheckRequested is added and repository returns some',
     build: () {
       when(mockRepository.getLoggedInUser()).thenAnswer(
         (_) async => some(user),
@@ -62,9 +65,7 @@ void main() {
       const AuthenticationEvent.authenticationCheckRequested(),
     ),
     verify: (_) => mockRepository.getLoggedInUser(),
-    expect: () {
-      return [AuthenticationState.authenticated(user)];
-    },
+    expect: () => [AuthenticationState.authenticated(user)],
   );
 
   blocTest<AuthenticationBloc, AuthenticationState>(

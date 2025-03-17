@@ -17,9 +17,6 @@ part 'cart_bloc.freezed.dart';
 
 @injectable
 class CartBloc extends HydratedBloc<CartEvent, CartState> {
-  final CartRepositoryInterface _repository;
-  final Logger _logger;
-
   CartBloc(this._repository, this._logger) : super(CartState.initial()) {
     on<CartEvent>(
       (event, emit) => event.when(
@@ -32,7 +29,7 @@ class CartBloc extends HydratedBloc<CartEvent, CartState> {
               showErrorMessages: true,
               failureOrSuccessOption: some(
                 left(
-                  Failure.application(ApplicationFailure.emptyCart()),
+                  const Failure.application(ApplicationFailure.emptyCart()),
                 ),
               ),
             ),
@@ -80,10 +77,15 @@ class CartBloc extends HydratedBloc<CartEvent, CartState> {
     );
   }
 
+  final CartRepositoryInterface _repository;
+  final Logger _logger;
+
   @override
   CartState? fromJson(Map<String, dynamic> json) {
     try {
-      final invitation = InvitationDto.fromJson(json['invitationOption']);
+      final invitation = InvitationDto.fromJson(
+        json['invitationOption'] as Map<String, dynamic>,
+      );
       final invitationOption = json['invitationOption'] != null
           ? some(invitation.toDomain())
           : none<Invitation>();
@@ -94,7 +96,7 @@ class CartBloc extends HydratedBloc<CartEvent, CartState> {
         isSubmitting: false,
         failureOrSuccessOption: none(),
       );
-    } catch (error) {
+    } on Exception catch (error) {
       _logger.e('Could not restore CartState from JSON: $error');
       return CartState.initial();
     }

@@ -13,25 +13,22 @@ class AccountPage extends StatelessWidget {
   const AccountPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return BlocConsumer<AuthenticationBloc, AuthenticationState>(
-      listener: _listener,
-      builder: (context, state) {
-        return Scaffold(
-          appBar: InvitationsAppBar(),
+  Widget build(BuildContext context) =>
+      BlocConsumer<AuthenticationBloc, AuthenticationState>(
+        listener: _listener,
+        builder: (context, state) => Scaffold(
+          appBar: const InvitationsAppBar(),
           body: Center(
             child: state.when(
-              initial: () => InvitationsProgressIndicator(),
-              unAuthenticated: () => Text("No has entrado"),
+              initial: InvitationsProgressIndicator.new,
+              unAuthenticated: () => const Text('No has entrado'),
               authenticated: (currentUser) => Text(
                 currentUser.email.getOrCrash(),
               ),
             ),
           ),
-        );
-      },
-    );
-  }
+        ),
+      );
 
   Object? _listener(BuildContext context, AuthenticationState state) =>
       state.maybeWhen(
@@ -39,7 +36,7 @@ class AccountPage extends StatelessWidget {
           context: context,
           builder: (context) => BlocProvider(
             create: (context) => getIt<LogInFormBloc>(),
-            child: LoginPopUp(),
+            child: const LoginPopUp(),
           ),
         ),
         orElse: () => null,

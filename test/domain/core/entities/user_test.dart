@@ -7,7 +7,7 @@ import '../../../test_descriptions.dart';
 
 void main() {
   final validUser = getValidUser();
-  final invalidEmailAddressUser = validUser.copyWith(email: EmailAddress(""));
+  final invalidEmailAddressUser = validUser.copyWith(email: EmailAddress(''));
   final invalidLastLoginUser = validUser.copyWith(
     lastLogin: PastDate(DateTime.now().add(const Duration(days: 10))),
   );
@@ -25,21 +25,21 @@ void main() {
     TestDescription.groupOnFailure,
     () {
       test(
-        "${TestDescription.invalid} with invalidEmailAddressUser",
+        '${TestDescription.invalid} with invalidEmailAddressUser',
         () async {
           // Assert
           expect(invalidEmailAddressUser.isValid, false);
         },
       );
       test(
-        "${TestDescription.invalid} with invalidLastLoginUser",
+        '${TestDescription.invalid} with invalidLastLoginUser',
         () async {
           // Assert
           expect(invalidLastLoginUser.isValid, false);
         },
       );
       test(
-        "${TestDescription.invalid} with invalidCreationDateUser",
+        '${TestDescription.invalid} with invalidCreationDateUser',
         () async {
           // Assert
           expect(invalidCreationDateUser.isValid, false);

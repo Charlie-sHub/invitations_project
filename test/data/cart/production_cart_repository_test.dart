@@ -101,7 +101,8 @@ void main() {
         () async {
           // Arrange
           final doc = fakeFirestore.invitationCollection.doc(invitationId);
-          // This is the way to throw exceptions according to FakeFirebaseFirestore documentation
+          // This is the way to throw exceptions according to
+          // FakeFirebaseFirestore documentation
           // But it's not working here and so the result is right
           whenCalling(Invocation.method(#set, null))
               .on(doc)
@@ -121,7 +122,8 @@ void main() {
         () async {
           // Arrange
           final doc = fakeFirestore.invitationCollection.doc(invitationId);
-          // This is the way to throw exceptions according to FakeFirebaseFirestore documentation
+          // This is the way to throw exceptions according to
+          // FakeFirebaseFirestore documentation
           // But it's not working here and so the result is right
           whenCalling(Invocation.method(#delete, null))
               .on(doc)

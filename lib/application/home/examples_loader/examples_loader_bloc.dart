@@ -14,19 +14,18 @@ part 'examples_loader_bloc.freezed.dart';
 @injectable
 class ExamplesLoaderBloc
     extends Bloc<ExamplesLoaderEvent, ExamplesLoaderState> {
-  final HomeRepositoryInterface _repository;
 
   ExamplesLoaderBloc(this._repository)
       : super(const ExamplesLoaderState.actionInProgress()) {
     on<ExamplesLoaderEvent>(
       (event, emit) => event.when(
         loadedExamples: () async {
-          emit(ExamplesLoaderState.actionInProgress());
+          emit(const ExamplesLoaderState.actionInProgress());
           final failureOrUnit = await _repository.getExampleInvitations();
           emit(
             failureOrUnit.fold(
-              (failure) => ExamplesLoaderState.loadFailure(failure),
-              (invitations) => ExamplesLoaderState.loadSuccess(invitations),
+              ExamplesLoaderState.loadFailure,
+              ExamplesLoaderState.loadSuccess,
             ),
           );
           return null;
@@ -34,4 +33,5 @@ class ExamplesLoaderBloc
       ),
     );
   }
+  final HomeRepositoryInterface _repository;
 }

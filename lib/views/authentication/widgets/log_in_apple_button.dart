@@ -7,8 +7,7 @@ class LogInAppleButton extends StatelessWidget {
   const LogInAppleButton({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return AppleAuthButton(
+  Widget build(BuildContext context) => AppleAuthButton(
       style: const AuthButtonStyle(
         buttonType: AuthButtonType.icon,
       ),
@@ -18,5 +17,4 @@ class LogInAppleButton extends StatelessWidget {
           );
       },
     );
-  }
 }

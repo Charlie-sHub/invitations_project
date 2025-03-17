@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:invitations_project/data/core/failures/data_failure.dart';
 import 'package:invitations_project/data/core/misc/firebase/firebase_helpers.dart';
 import 'package:invitations_project/data/core/misc/get_valid_invitation.dart';
 import 'package:invitations_project/data/core/models/invitation_dto.dart';
 import 'package:invitations_project/data/home/production_home_repository.dart';
+import 'package:invitations_project/domain/core/entities/invitation.dart';
 import 'package:logger/logger.dart';
 import 'package:mock_exceptions/mock_exceptions.dart';
 import 'package:mockito/annotations.dart';
@@ -61,7 +61,7 @@ void main() {
 
       // Assert
       expect(result.isRight(), true);
-      expect(result.getOrElse(() => []), []);
+      expect(result.getOrElse(() => []), <Invitation>[]);
     },
   );
 
@@ -70,7 +70,7 @@ void main() {
     skip: true,
     () async {
       final collection = fakeFirebaseFirestore.invitationCollection;
-      // This is the way to throw exceptions according to FakeFirebaseFirestore documentation
+      // This is the way to throw exceptions according to FakeFirebaseFirestore
       // But it's not working here and so the result is right
       whenCalling(
         Invocation.method(

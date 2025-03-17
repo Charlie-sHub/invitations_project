@@ -5,11 +5,10 @@ import 'package:invitations_project/domain/core/validation/objects/past_date.dar
 import 'package:invitations_project/domain/core/validation/objects/title.dart';
 import 'package:invitations_project/domain/core/validation/objects/unique_id.dart';
 
-Invitation getValidInvitation() {
-  return Invitation(
+Invitation getValidInvitation() => Invitation(
     id: UniqueId(),
     creatorId: UniqueId(),
-    title: Title("valid invitation title"),
+    title: Title('valid invitation title'),
     type: InvitationType.example,
     eventDate: FutureDate(
       DateTime.now().add(const Duration(days: 100)),
@@ -21,4 +20,3 @@ Invitation getValidInvitation() {
       DateTime.now().subtract(const Duration(days: 100)),
     ),
   );
-}

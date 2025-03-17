@@ -6,19 +6,19 @@ void main() {
   final validDate = DateTime.now();
   final invalidDate = DateTime.now().add(const Duration(days: 50));
   test(
-    "Should return validDate",
+    'Should return validDate',
     () async {
       // Act
-      final Object result = _act(validDate);
+      final result = _act(validDate);
       // Assert
       expect(result, validDate);
     },
   );
   test(
-    "Should return InvalidDate",
+    'Should return InvalidDate',
     () async {
       // Act
-      final Object result = _act(invalidDate);
+      final result = _act(invalidDate);
       // Assert
       expect(
         result,

@@ -9,16 +9,15 @@ class SplashPage extends StatelessWidget {
   const SplashPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return BlocListener<AuthenticationBloc, AuthenticationState>(
-      listener: _splashListener,
-      child: Scaffold(
-        body: Center(
-          child: CircularProgressIndicator.adaptive(),
+  Widget build(BuildContext context) =>
+      BlocListener<AuthenticationBloc, AuthenticationState>(
+        listener: _splashListener,
+        child: const Scaffold(
+          body: Center(
+            child: CircularProgressIndicator.adaptive(),
+          ),
         ),
-      ),
-    );
-  }
+      );
 
   void _splashListener(BuildContext context, AuthenticationState state) {
     state.map(

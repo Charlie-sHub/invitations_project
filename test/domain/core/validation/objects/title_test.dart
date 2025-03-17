@@ -3,11 +3,11 @@ import 'package:invitations_project/domain/core/validation/objects/title.dart';
 import '../../../../test_descriptions.dart';
 
 void main() {
-  const validName = "Test Test";
-  const emptyName = "";
-  const multiLineName = "Test \n Test";
+  const validName = 'Test Test';
+  const emptyName = '';
+  const multiLineName = 'Test \n Test';
   const tooLongName =
-      "TestTestTestTestTestTestTestTestTestTestTestTestTestTestTest";
+      'TestTestTestTestTestTestTestTestTestTestTestTestTestTestTest';
   test(
     TestDescription.valid,
     () async {
@@ -22,7 +22,7 @@ void main() {
     TestDescription.groupOnFailure,
     () {
       test(
-        "${TestDescription.invalid} with tooLongName",
+        '${TestDescription.invalid} with tooLongName',
         () async {
           // Act
           final name = Title(tooLongName);
@@ -31,7 +31,7 @@ void main() {
         },
       );
       test(
-        "${TestDescription.invalid} with emptyName",
+        '${TestDescription.invalid} with emptyName',
         () async {
           // Act
           final name = Title(emptyName);
@@ -40,7 +40,7 @@ void main() {
         },
       );
       test(
-        "${TestDescription.invalid} with multiLineName",
+        '${TestDescription.invalid} with multiLineName',
         () async {
           // Act
           final name = Title(multiLineName);

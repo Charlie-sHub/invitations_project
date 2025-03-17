@@ -9,25 +9,23 @@ class PasswordTextField extends StatelessWidget {
     super.key,
   });
 
-  final Function eventToAdd;
+  final void Function(String) eventToAdd;
   final Validator<String?> validator;
 
   @override
-  Widget build(BuildContext context) {
-    return TextFormField(
+  Widget build(BuildContext context) => TextFormField(
       maxLength: Password.maxLength,
       autocorrect: false,
       obscureText: true,
       onChanged: (value) => eventToAdd(value.trim()),
       validator: validator,
-      decoration: InputDecoration(
-        labelText: "Contraseña",
-        counterText: "",
-        prefixIcon: const Icon(
+      decoration: const InputDecoration(
+        labelText: 'Contraseña',
+        counterText: '',
+        prefixIcon: Icon(
           Icons.lock,
         ),
         filled: true,
       ),
     );
-  }
 }

@@ -7,9 +7,10 @@ import 'package:invitations_project/domain/core/failures/error.dart';
 import 'package:invitations_project/injection.dart';
 
 extension FirestoreX on FirebaseFirestore {
-  Future<DocumentReference<InvitationDto>> invitationDocRef(String id) async {
-    return invitationCollection.doc(id);
-  }
+  Future<DocumentReference<InvitationDto>> invitationDocRef(String id) async =>
+      invitationCollection.doc(
+        id,
+      );
 
   Future<InvitationDto?> invitationDto(String id) async {
     final reference = invitationCollection.doc(id);
@@ -41,7 +42,7 @@ extension FirestoreX on FirebaseFirestore {
   }
 
   CollectionReference<UserDto> get userCollection =>
-      collection("users").withConverter<UserDto>(
+      collection('users').withConverter<UserDto>(
         fromFirestore: (snapshots, _) => UserDto.fromJson(
           snapshots.data()!,
         ),
@@ -51,7 +52,7 @@ extension FirestoreX on FirebaseFirestore {
   Future<bool> userExistsInCollection(String email) async {
     final query = await userCollection
         .where(
-          "email",
+          'email',
           isEqualTo: email,
         )
         .get();
@@ -59,7 +60,7 @@ extension FirestoreX on FirebaseFirestore {
   }
 
   CollectionReference<InvitationDto> get invitationCollection =>
-      collection("invitations").withConverter<InvitationDto>(
+      collection('invitations').withConverter<InvitationDto>(
         fromFirestore: (snapshots, _) => InvitationDto.fromJson(
           snapshots.data()!,
         ),

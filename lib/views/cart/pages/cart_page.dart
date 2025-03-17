@@ -8,10 +8,8 @@ class CartPage extends StatelessWidget {
   const CartPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  Widget build(BuildContext context) => const Scaffold(
       appBar: InvitationsAppBar(),
       body: CartBody(),
     );
-  }
 }

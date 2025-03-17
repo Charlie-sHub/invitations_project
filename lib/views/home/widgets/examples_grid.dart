@@ -11,16 +11,14 @@ class ExamplesGrid extends StatelessWidget {
   final List<Invitation> invitations;
 
   @override
-  Widget build(BuildContext context) {
-    return GridView.builder(
+  Widget build(BuildContext context) => GridView.builder(
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 3,
       ),
-      padding: EdgeInsets.all(200),
+      padding: const EdgeInsets.all(200),
       itemCount: invitations.length,
       itemBuilder: (context, index) => InvitationCard(
         invitation: invitations[index],
       ),
     );
-  }
 }

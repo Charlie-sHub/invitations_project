@@ -6,9 +6,8 @@ class InvitationsAppBar extends StatelessWidget implements PreferredSizeWidget {
   const InvitationsAppBar({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return AppBar(
-      title: Text("Invitaciones"),
+  Widget build(BuildContext context) => AppBar(
+      title: const Text('Invitaciones'),
       centerTitle: true,
       actions: [
         IconButton(
@@ -29,7 +28,6 @@ class InvitationsAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
       ],
     );
-  }
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight - 15);

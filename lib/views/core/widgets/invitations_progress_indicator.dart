@@ -4,9 +4,7 @@ class InvitationsProgressIndicator extends StatelessWidget {
   const InvitationsProgressIndicator({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return const Center(
+  Widget build(BuildContext context) => const Center(
       child: CircularProgressIndicator.adaptive(),
     );
-  }
 }
